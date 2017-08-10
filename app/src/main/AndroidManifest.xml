@@ -48,7 +48,13 @@
                 <data android:mimeType="application/xhtml+xml"/>
             </intent-filter>
 
-        </activity>"
+        </activity>
+
+        <activity android:name=".activity.CaptureActivity"
+            android:process=":Capture"
+            android:theme="@style/Theme.Transparent"
+            android:exported="false">
+        </activity>
 
         <activity android:name=".activity.TextActionActivity"
             android:exported="true"

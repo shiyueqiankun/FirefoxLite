@@ -45,6 +45,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
 
     public static final String EXTRA_TEXT_SELECTION = "text_selection";
     private static int REQUEST_CODE_STORAGE_PERMISSION = 101;
+    private static int REQUEST_CODE_CAPTURE = 102;
     private static final Handler HANDLER = new Handler();
 
     private String pendingUrl;
@@ -54,6 +55,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     private FloatingActionButton btnSearch;
     private FloatingActionButton btnHome;
     private FloatingActionButton btnMenu;
+    private ScreenCaptureDialogFragment screenCaptureDialogFragment;
 
     private MainMediator mediator;
 
@@ -298,14 +300,14 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         browserFragment.reload();
     }
 
-    private void onCapturePageClicked(final BrowserFragment browserFragment) {
+    private void onCapturePageClicked(BrowserFragment browserFragment) {
         if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // We do have the permission to write to the external storage.
-            showLoadingAndCapture(browserFragment);
+            showLoadingAndCapture(browserFragment.getUrl());
         } else {
             // We do not have the permission to write to the external storage. Request the permission and start the
             // capture from onRequestPermissionsResult().
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
             }
         }
@@ -340,12 +342,24 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
         }
     }
 
-    private void showLoadingAndCapture(final BrowserFragment browserFragment) {
-        final ScreenCaptureDialogFragment capturingFragment = ScreenCaptureDialogFragment.newInstance();
-        capturingFragment.show(getSupportFragmentManager(), "capturingFragment");
-        final int WAIT_INTERVAL = 50;
-        // Post delay to wait for Dialog to show
-        HANDLER.postDelayed(new CaptureRunnable(browserFragment, capturingFragment, findViewById(R.id.container)), WAIT_INTERVAL);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_CAPTURE ) {
+            int captureResultResource = R.string.screenshot_failed;
+            if(resultCode == RESULT_OK && data.getBooleanExtra(CaptureActivity.CAPTURE_SUCCESS, false)) {
+                captureResultResource = R.string.screenshot_saved;
+            }
+            screenCaptureDialogFragment.dismiss();
+            Snackbar.make(findViewById(R.id.container), captureResultResource, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showLoadingAndCapture(String url) {
+        screenCaptureDialogFragment = ScreenCaptureDialogFragment.newInstance();
+        screenCaptureDialogFragment.show(getSupportFragmentManager(), "capturingFragment");
+        Intent captureIntent = new Intent(this, CaptureActivity.class);
+        captureIntent.putExtra(CaptureActivity.TARGET_URL, url);
+        startActivityForResult(captureIntent, REQUEST_CODE_CAPTURE);
     }
 
 
@@ -357,7 +371,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
                 if (browserFragment == null || !browserFragment.isVisible()) {
                     return;
                 }
-                showLoadingAndCapture(browserFragment);
+                showLoadingAndCapture(browserFragment.getUrl());
             }
         }
     }
