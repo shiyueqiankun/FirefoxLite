@@ -145,30 +145,12 @@ public class WebViewProvider {
     }
 
     @VisibleForTesting static String buildUserAgentString(final Context context, final WebSettings settings, final String appName) {
-        final StringBuilder uaBuilder = new StringBuilder();
 
-        uaBuilder.append("Mozilla/5.0");
+        String existingWebViewUA = settings.getUserAgentString();
 
-        // WebView by default includes "; wv" as part of the platform string, but we're a full browser
-        // so we shouldn't include that.
-        // Most webview based browsers (and chrome), include the device name AND build ID, e.g.
-        // "Pixel XL Build/NOF26V", that seems unnecessary (and not great from a privacy perspective),
-        // so we skip that too.
-        uaBuilder.append(" (Linux; Android ").append(Build.VERSION.RELEASE).append("; rv) ");
+        existingWebViewUA = existingWebViewUA.replace("Version/4.0 ", "");
+        existingWebViewUA = existingWebViewUA.replace("; wv", "");
 
-        final String existingWebViewUA = settings.getUserAgentString();
-
-        final String appVersion;
-        try {
-            appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // This should be impossible - we should always be able to get information about ourselves:
-            throw new IllegalStateException("Unable find package details for Rocket", e);
-        }
-
-        final String focusToken = appName + "/" + appVersion;
-        uaBuilder.append(getUABrowserString(existingWebViewUA, focusToken));
-
-        return uaBuilder.toString();
+        return existingWebViewUA;
     }
 }
