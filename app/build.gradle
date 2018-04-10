@@ -188,6 +188,10 @@ dependencies {
     implementation project(':third_party:subsampling-scale-image-view')
     implementation project(':third_party:glide:annotation')
     implementation project(':third_party:glide:library')
+    implementation project(':third_party:glide:library')
+    implementation project(':safe-annotation')
+    annotationProcessor project(':safe-processor')
+
     annotationProcessor Libs.glide_compiler
     kapt Libs.glide_compiler
 

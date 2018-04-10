@@ -11,16 +11,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import org.mozilla.focus.R;
+import org.mozilla.focus.SafeStartIntent;
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity;
 import org.mozilla.focus.settings.SettingsFragment;
 
+
+@SafeStartIntent
 public class SettingsActivity extends LocaleAwareAppCompatActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_settings);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
