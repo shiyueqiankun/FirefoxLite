@@ -210,6 +210,11 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:${Versions.glide}"
 
     implementation project(':firebase')
+    implementation project(':utils')
+    implementation project(':tabview')
+    implementation project(':webkit')
+    implementation project(':gecko')
+    implementation project(':privatebrowsing')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 
