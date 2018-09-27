@@ -165,7 +165,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     private boolean hasPendingScreenCaptureTask = false;
 
-    final SessionManager.Observer managerObserver = new SessionManagerObserver();
+    private SessionObserver sessionObserver = new SessionObserver();
+    final SessionManager.Observer managerObserver = new SessionManagerObserver(sessionObserver);
 
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -1213,6 +1214,17 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
                     null);
         }
 
+        void changeSession(@Nullable Session nextSession) {
+            if (this.session != null) {
+                this.session.unregister(this);
+            }
+            this.session = nextSession;
+            if (this.session != null) {
+                this.session.register(this);
+            }
+        }
+
+
         private void updateUrlFromWebView(@NonNull Session source) {
             if (sessionManager.getFocusSession() != null) {
                 final String viewURL = sessionManager.getFocusSession().getUrl();
@@ -1227,6 +1239,11 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
     class SessionManagerObserver implements SessionManager.Observer {
         private ValueAnimator tabTransitionAnimator;
+        private SessionObserver sessionObserver;
+
+        SessionManagerObserver(SessionObserver observer) {
+            this.sessionObserver = observer;
+        }
 
         @Override
         public void onFocusChanged(@Nullable final Session tab, SessionManager.Factor factor) {
@@ -1339,6 +1356,8 @@ public class BrowserFragment extends LocaleAwareFragment implements View.OnClick
 
             final View inView = tabView.getView();
             webViewSlot.addView(inView);
+
+            this.sessionObserver.changeSession(targetTab);
 
             startTransitionAnimation(null, inView, null);
         }
