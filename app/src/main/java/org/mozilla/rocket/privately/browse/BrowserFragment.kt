@@ -24,6 +24,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.ThreadUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -168,7 +169,8 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         sessionManager.dropTab(focus.id)
-        return false
+        ScreenNavigator.get(activity).popToHomeScreen(true)
+        return true
     }
 
     override fun getFragment(): Fragment {
@@ -183,7 +185,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
     override fun goForeground() {
         val tabView = sessionManager.focusSession?.tabView ?: return
-        tabViewSlot.addView(tabView.view)
+        if (tabViewSlot.childCount == 0) {
+            tabViewSlot.addView(tabView.view)
+        }
     }
 
     override fun goBackground() {
@@ -201,6 +205,8 @@ class BrowserFragment : LocaleAwareFragment(),
             } else {
                 sessionManager.focusSession!!.tabView!!.loadUrl(url)
             }
+
+            ThreadUtils.postToMainThread(onViewReadyCallback)
         }
     }
 
@@ -259,11 +265,10 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun onDeleteClicked() {
-        val listener = activity as FragmentListener
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
-        listener.onNotified(this, TYPE.DROP_BROWSING_PAGES, null)
+        ScreenNavigator.get(activity).popToHomeScreen(true)
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
@@ -272,8 +277,6 @@ class BrowserFragment : LocaleAwareFragment(),
         var session: Session? = null
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
-            super.onSessionAdded(session, arguments)
-            fragment.tabViewSlot.addView(session.tabView!!.view)
         }
 
         override fun onProgressChanged(progress: Int) {
