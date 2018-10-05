@@ -883,7 +883,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity implements Fragme
     }
 
     @Override
-    public void sendBrowsingTelemetry() {
+    public void onBrowserScreenRaised() {
         final SafeIntent intent = new SafeIntent(getIntent());
         if (intent.getBooleanExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_TEXT_SELECTION.getValue(), false)) {
             TelemetryWrapper.textSelectionIntentEvent();
