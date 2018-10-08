@@ -182,7 +182,7 @@
     <!-- Label used in the contextmenu shown when long-pressing on an image -->
     <string name="contextmenu_image_copy">Copy image address</string>
     <!-- Label used in the contextmenu shown when long-pressing on an image -->
-    <string name="contextmenu_image_save">Save image</string>
+    <string name="contextmenu_image_save">Save images</string>
     <!-- Label used in the contextmenu shown when long-pressing on a link -->
     <string name="contextmenu_open_in_new_tab">Open link in new tab</string>
     <!-- Label used in the contextmenu shown when long-pressing on a image -->
