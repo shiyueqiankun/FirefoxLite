@@ -25,6 +25,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetBehavior.BottomSheetCallback;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,7 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 import org.mozilla.rocket.tabs.Session;
@@ -72,7 +74,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View newTabBtn;
     private View logoMan;
     private View closeTabsBtn;
-    private View privateModeBtn;
+    private View modeBtn;
     private View privateModeBadge;
 
     private AlertDialog closeTabsDialog;
@@ -139,7 +141,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         recyclerView = view.findViewById(R.id.tab_tray);
         newTabBtn = view.findViewById(R.id.new_tab_button);
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
-        privateModeBtn = view.findViewById(R.id.btn_private_browsing);
+        modeBtn = view.findViewById(R.id.btn_mode);
         privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
         tabTrayViewModel = ViewModelProviders.of(this).get(TabTrayViewModel.class);
         tabTrayViewModel.hasPrivateTab().observe(this, hasPrivateTab -> {
@@ -148,7 +150,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        privateModeBtn.setVisibility(PrivateMode.isEnable(getContext()) ? View.VISIBLE : View.INVISIBLE);
+        modeBtn.setVisibility(PrivateMode.isEnable(getContext()) ? View.VISIBLE : View.INVISIBLE);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         return view;
@@ -168,7 +170,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         newTabBtn.setOnClickListener(this);
         closeTabsBtn.setOnClickListener(this);
-        privateModeBtn.setOnClickListener(this);
+        modeBtn.setOnClickListener(this);
         setupTapBackgroundToExpand();
 
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -199,10 +201,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 onCloseAllTabsClicked();
                 break;
 
-            case R.id.btn_private_browsing:
-                TelemetryWrapper.togglePrivateMode(true);
-                startActivity(new Intent(getContext(), PrivateModeActivity.class));
-                getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
+            case R.id.btn_mode:
+                onModeClicked();
                 break;
 
             default:
@@ -512,6 +512,15 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         } else {
             closeTabsDialog.show();
         }
+    }
+
+    private void onModeClicked() {
+        final FragmentActivity parent = getActivity();
+        if (parent != null && parent instanceof FragmentListener) {
+            final FragmentListener listener = (FragmentListener) parent;
+            listener.onNotified(this, FragmentListener.TYPE.TOGGLE_PRIVATE_MODE, null);
+        }
+        closeTabTray();
     }
 
     private void initWindowBackground(Context context) {
