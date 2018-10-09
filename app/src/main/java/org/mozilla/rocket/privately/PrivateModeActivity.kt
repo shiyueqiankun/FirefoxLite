@@ -86,7 +86,7 @@ class PrivateModeActivity : LocaleAwareAppCompatActivity(),
             TYPE.DISMISS_URL_INPUT -> dismissUrlInput()
             TYPE.OPEN_URL_IN_CURRENT_TAB -> openUrl(payload)
             TYPE.OPEN_URL_IN_NEW_TAB -> openUrl(payload)
-            TYPE.SHOW_TAB_TRAY -> TabTray.show(supportFragmentManager)
+            TYPE.SHOW_TAB_TRAY -> TabTray.show(supportFragmentManager, true)
             else -> {
             }
         }
