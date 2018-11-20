@@ -313,6 +313,11 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onUrlChanged(session: Session, url: String?) {
             if (!UrlUtils.isInternalErrorURL(url)) {
+                if (fragment.activity != null) {
+                    ViewModelProviders.of(fragment.activity!!)
+                            .get(SharedViewModel::class.java)
+                            .setUrl(url!!)
+                }
                 fragment.displayUrlView.text = url
             }
         }
