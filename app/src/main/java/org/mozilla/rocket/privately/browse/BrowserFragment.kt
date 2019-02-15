@@ -131,7 +131,7 @@ class BrowserFragment : LocaleAwareFragment(),
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
-        sessionManager = TabsSessionProvider.getOrThrow( activity)
+        sessionManager = TabsSessionProvider.getOrThrow(activity)
         observer = Observer(this)
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
@@ -189,7 +189,11 @@ class BrowserFragment : LocaleAwareFragment(),
                 actionDownloadGranted(params)
             }
 
-            override fun doActionNoPermission(permission: String?, actionId: Int, params: Parcelable?) {
+            override fun doActionNoPermission(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
             }
 
             override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
@@ -276,7 +280,12 @@ class BrowserFragment : LocaleAwareFragment(),
         tabViewSlot.removeView(tabView.view)
     }
 
-    override fun loadUrl(url: String, openNewTab: Boolean, isFromExternal: Boolean, onViewReadyCallback: Runnable?) {
+    override fun loadUrl(
+        url: String,
+        openNewTab: Boolean,
+        isFromExternal: Boolean,
+        onViewReadyCallback: Runnable?
+    ) {
         if (url.isNotBlank()) {
             displayUrlView.text = url
             if (sessionManager.tabsCount == 0) {
@@ -345,7 +354,11 @@ class BrowserFragment : LocaleAwareFragment(),
             return false
         }
 
-        override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+        override fun onShowFileChooser(
+            es: TabViewEngineSession,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
             // do nothing, exist for interface compatibility only.
             return false
         }
@@ -443,7 +456,10 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         }
 
-        override fun onDownload(session: Session, download: mozilla.components.browser.session.Download): Boolean {
+        override fun onDownload(
+            session: Session,
+            download: mozilla.components.browser.session.Download
+        ): Boolean {
             val activity = fragment.activity
             if (activity == null || !activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 return false

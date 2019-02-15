@@ -82,7 +82,11 @@ internal class TabsSessionModel(private val sessionManager: SessionManager) : Ta
                     return false
                 }
 
-                override fun onShowFileChooser(es: TabViewEngineSession, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: WebChromeClient.FileChooserParams?): Boolean {
+                override fun onShowFileChooser(
+                    es: TabViewEngineSession,
+                    filePathCallback: ValueCallback<Array<Uri>>?,
+                    fileChooserParams: WebChromeClient.FileChooserParams?
+                ): Boolean {
                     // do nothing
                     return false
                 }

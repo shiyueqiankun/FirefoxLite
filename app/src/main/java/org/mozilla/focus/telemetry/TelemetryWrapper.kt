@@ -1938,7 +1938,12 @@ object TelemetryWrapper {
                 .extra(Extra.ENGINE, engineName).queue()
     }
 
-    internal class EventBuilder @JvmOverloads constructor(category: String, method: String, `object`: String?, value: String? = null) {
+    internal class EventBuilder @JvmOverloads constructor(
+        category: String,
+        method: String,
+        `object`: String?,
+        value: String? = null
+    ) {
         var telemetryEvent: TelemetryEvent
         var firebaseEvent: FirebaseEvent
 
@@ -2071,7 +2076,10 @@ object TelemetryWrapper {
             addCustomPing(configuration, CaptureCountMeasurement(context))
         }
 
-        internal fun addCustomPing(configuration: TelemetryConfiguration, measurement: TelemetryMeasurement) {
+        internal fun addCustomPing(
+            configuration: TelemetryConfiguration,
+            measurement: TelemetryMeasurement
+        ) {
             var preferenceKeys: MutableSet<String>? = configuration.preferencesImportantForTelemetry
             if (preferenceKeys == null) {
                 configuration.setPreferencesImportantForTelemetry(*arrayOf())

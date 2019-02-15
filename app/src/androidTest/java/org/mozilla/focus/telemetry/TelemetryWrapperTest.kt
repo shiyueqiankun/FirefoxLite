@@ -32,7 +32,12 @@ class TelemetryWrapperTest {
         preferences.edit().putBoolean(prefName, false).apply()
     }
 
-    private fun assertFirebaseEvent(category: String, method: String, `object`: String?, value: String) {
+    private fun assertFirebaseEvent(
+        category: String,
+        method: String,
+        `object`: String?,
+        value: String
+    ) {
         val eventFromBuilder = TelemetryWrapper.EventBuilder(category, method, `object`, value).firebaseEvent
         val event = FirebaseEvent(category, method, `object`, value)
         assert(event == eventFromBuilder)
