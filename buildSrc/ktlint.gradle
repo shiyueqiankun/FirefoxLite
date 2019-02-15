@@ -16,5 +16,6 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     description = "Fix Kotlin code style deviations."
     classpath = configurations.ktlint
     main = "com.github.shyiko.ktlint.Main"
-    args "-F", "**/*.kt"
+    // -F: fix format, -a: align Android Kotlin guide
+    args "-F", "-a", "**/*.kt"
 }
