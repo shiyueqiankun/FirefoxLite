@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 
-class ThemedTextView(context: Context, attrs: AttributeSet) : android.support.v7.widget.AppCompatTextView(context, attrs) {
+class ThemedTextView(context: Context, attrs: AttributeSet) :
+    android.support.v7.widget.AppCompatTextView(context, attrs) {
     private var isNight: Boolean = false
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
-            val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
+            val drawableState =
+                super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {

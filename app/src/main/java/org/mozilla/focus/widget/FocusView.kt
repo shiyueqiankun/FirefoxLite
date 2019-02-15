@@ -28,7 +28,9 @@ class FocusView : View {
         initPaints()
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context, attrs, defStyleAttr
+    ) {
         initPaints()
     }
 
@@ -52,10 +54,20 @@ class FocusView : View {
 
         path.reset()
 
-        path.addCircle(centerX.toFloat(), (centerY - statusBarOffset).toFloat(), radius.toFloat(), Path.Direction.CW)
+        path.addCircle(
+            centerX.toFloat(),
+            (centerY - statusBarOffset).toFloat(),
+            radius.toFloat(),
+            Path.Direction.CW
+        )
         path.fillType = Path.FillType.INVERSE_EVEN_ODD
 
-        canvas.drawCircle(centerX.toFloat(), (centerY - statusBarOffset).toFloat(), radius.toFloat(), transparentPaint)
+        canvas.drawCircle(
+            centerX.toFloat(),
+            (centerY - statusBarOffset).toFloat(),
+            radius.toFloat(),
+            transparentPaint
+        )
         canvas.clipPath(path)
         canvas.drawColor(ContextCompat.getColor(context, R.color.myShotOnBoardingBackground))
     }

@@ -36,7 +36,13 @@ class PromotionModel {
 
     var showRateAppDialogFromIntent by Delegates.notNull<Boolean>()
 
-    constructor(context: Context, safeIntent: SafeIntent) : this(context, Settings.getInstance(context).eventHistory, NewFeatureNotice.getInstance(context), safeIntent)
+    constructor(context: Context, safeIntent: SafeIntent) : this(
+        context,
+        Settings.getInstance(context).eventHistory,
+        NewFeatureNotice.getInstance(context),
+        safeIntent
+    )
+
     @VisibleForTesting
     constructor(
         context: Context,
@@ -51,23 +57,28 @@ class PromotionModel {
         didShowShareDialog = history.contains(Settings.Event.ShowShareAppDialog)
         didDismissRateDialog = history.contains(Settings.Event.DismissRateAppDialog)
         didShowRateAppNotification = history.contains(Settings.Event.ShowRateAppNotification)
-        isSurveyEnabled = AppConfigWrapper.isSurveyNotificationEnabled() && !history.contains(Settings.Event.PostSurveyNotification)
+        isSurveyEnabled =
+            AppConfigWrapper.isSurveyNotificationEnabled() && !history.contains(Settings.Event.PostSurveyNotification)
         if (accumulateAppCreateCount()) {
             history.add(Settings.Event.AppCreate)
         }
         appCreateCount = history.getCount(Settings.Event.AppCreate)
         rateAppDialogThreshold = AppConfigWrapper.getRateDialogLaunchTimeThreshold(context)
-        rateAppNotificationThreshold = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(context)
-        shareAppDialogThreshold = AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
+        rateAppNotificationThreshold =
+            AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold(context)
+        shareAppDialogThreshold =
+            AppConfigWrapper.getShareDialogLaunchTimeThreshold(context, didDismissRateDialog)
 
         shouldShowPrivacyPolicyUpdate = newFeatureNotice.shouldShowPrivacyPolicyUpdate()
     }
 
     fun parseIntent(safeIntent: SafeIntent?) {
-        showRateAppDialogFromIntent = safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) == true
+        showRateAppDialogFromIntent =
+            safeIntent?.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false) == true
     }
 
-    private fun accumulateAppCreateCount() = !didShowRateDialog || !didShowShareDialog || isSurveyEnabled || !didShowRateAppNotification
+    private fun accumulateAppCreateCount() =
+        !didShowRateDialog || !didShowShareDialog || isSurveyEnabled || !didShowRateAppNotification
 }
 
 class PromotionPresenter {
@@ -75,8 +86,7 @@ class PromotionPresenter {
 
         @JvmStatic
         fun runPromotion(
-            promotionViewContract: PromotionViewContract,
-            promotionModel: PromotionModel
+            promotionViewContract: PromotionViewContract, promotionModel: PromotionModel
         ) {
             if (runPromotionFromIntent(promotionViewContract, promotionModel)) {
                 // Don't run other promotion if we already displayed above promotion
@@ -103,8 +113,7 @@ class PromotionPresenter {
         @JvmStatic
         // return true if promotion is already handled
         fun runPromotionFromIntent(
-            promotionViewContract: PromotionViewContract,
-            promotionModel: PromotionModel
+            promotionViewContract: PromotionViewContract, promotionModel: PromotionModel
         ): Boolean {
             // When we receive this action, it means we need to show "Love Rocket" dialog
             if (promotionModel.showRateAppDialogFromIntent) {

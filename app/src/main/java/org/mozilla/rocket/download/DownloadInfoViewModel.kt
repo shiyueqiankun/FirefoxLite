@@ -30,16 +30,17 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private var isLastPage = false
     private var progressUpdateListener: OnProgressUpdateListener? = null
 
-    private var updateListener: DownloadInfoRepository.OnQueryItemCompleteListener = object : DownloadInfoRepository.OnQueryItemCompleteListener {
-        override fun onComplete(download: DownloadInfo) {
-            updateItem(download)
+    private var updateListener: DownloadInfoRepository.OnQueryItemCompleteListener =
+        object : DownloadInfoRepository.OnQueryItemCompleteListener {
+            override fun onComplete(download: DownloadInfo) {
+                updateItem(download)
+            }
         }
-    }
 
     private val runningDownloadIds: LongArray
         get() {
-            val ids = downloadInfoPack.list
-                    .filter { it.status == DownloadManager.STATUS_RUNNING || it.status == DownloadManager.STATUS_PENDING }
+            val ids =
+                downloadInfoPack.list.filter { it.status == DownloadManager.STATUS_RUNNING || it.status == DownloadManager.STATUS_PENDING }
                     .map { it.downloadId }
             val array = LongArray(ids.size)
             for (i in array.indices) {
@@ -83,35 +84,41 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         if (isLastPage || isLoading) {
             return
         }
-        repository.loadData(itemCount, PAGE_SIZE, object : DownloadInfoRepository.OnQueryListCompleteListener {
-            override fun onComplete(list: List<DownloadInfo>) {
-                downloadInfoPack.list.addAll(list)
-                downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED
-                itemCount = downloadInfoPack.list.size
-                downloadInfoObservable.value = downloadInfoPack
-                isOpening = false
-                isLoading = false
-                isLastPage = list.isEmpty()
-                if (isDownloading) {
-                    progressUpdateListener?.onStartUpdate()
+        repository.loadData(
+            itemCount,
+            PAGE_SIZE,
+            object : DownloadInfoRepository.OnQueryListCompleteListener {
+                override fun onComplete(list: List<DownloadInfo>) {
+                    downloadInfoPack.list.addAll(list)
+                    downloadInfoPack.notifyType =
+                        DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED
+                    itemCount = downloadInfoPack.list.size
+                    downloadInfoObservable.value = downloadInfoPack
+                    isOpening = false
+                    isLoading = false
+                    isLastPage = list.isEmpty()
+                    if (isDownloading) {
+                        progressUpdateListener?.onStartUpdate()
+                    }
                 }
-            }
-        })
+            })
         isLoading = true
     }
 
     fun cancel(rowId: Long) {
-        repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
-            override fun onComplete(download: DownloadInfo) {
-                if (download.existInDownloadManager()) {
-                    if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status) {
-                        toastMessageObservable.value = R.string.download_cancel
-                        repository.deleteFromDownloadManager(download.downloadId)
-                        remove(rowId)
+        repository.queryByRowId(
+            rowId,
+            object : DownloadInfoRepository.OnQueryItemCompleteListener {
+                override fun onComplete(download: DownloadInfo) {
+                    if (download.existInDownloadManager()) {
+                        if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status) {
+                            toastMessageObservable.value = R.string.download_cancel
+                            repository.deleteFromDownloadManager(download.downloadId)
+                            remove(rowId)
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     fun remove(rowId: Long) {
@@ -120,16 +127,18 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun delete(rowId: Long) {
-        repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
-            override fun onComplete(download: DownloadInfo) {
-                val file = File(URI.create(download.fileUri).path)
-                if (file.exists()) {
-                    deleteSnackbarObservable.value = download
-                } else {
-                    toastMessageObservable.value = R.string.cannot_find_the_file
+        repository.queryByRowId(
+            rowId,
+            object : DownloadInfoRepository.OnQueryItemCompleteListener {
+                override fun onComplete(download: DownloadInfo) {
+                    val file = File(URI.create(download.fileUri).path)
+                    if (file.exists()) {
+                        deleteSnackbarObservable.value = download
+                    } else {
+                        toastMessageObservable.value = R.string.cannot_find_the_file
+                    }
                 }
-            }
-        })
+            })
     }
 
     fun confirmDelete(download: DownloadInfo) {
@@ -191,19 +200,21 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private fun updateRunningItems() {
         if (!runningDownloadIds.isEmpty()) {
             for (i in runningDownloadIds.indices) {
-                repository.queryByDownloadId(runningDownloadIds[i], object : DownloadInfoRepository.OnQueryItemCompleteListener {
-                    override fun onComplete(download: DownloadInfo) {
-                        for (j in 0 until downloadInfoPack.list.size) {
-                            val downloadInfo = downloadInfoPack.list[j]
-                            if (download.downloadId == downloadInfo.downloadId) {
-                                downloadInfo.setStatusInt(download.status)
-                                downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
-                                downloadInfoPack.index = j.toLong()
-                                downloadInfoObservable.value = downloadInfoPack
+                repository.queryByDownloadId(runningDownloadIds[i],
+                    object : DownloadInfoRepository.OnQueryItemCompleteListener {
+                        override fun onComplete(download: DownloadInfo) {
+                            for (j in 0 until downloadInfoPack.list.size) {
+                                val downloadInfo = downloadInfoPack.list[j]
+                                if (download.downloadId == downloadInfo.downloadId) {
+                                    downloadInfo.setStatusInt(download.status)
+                                    downloadInfoPack.notifyType =
+                                        DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
+                                    downloadInfoPack.index = j.toLong()
+                                    downloadInfoObservable.value = downloadInfoPack
+                                }
                             }
                         }
-                    }
-                })
+                    })
             }
         }
     }
@@ -217,32 +228,34 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun queryDownloadProgress() {
-        repository.queryDownloadingItems(runningDownloadIds, object : DownloadInfoRepository.OnQueryListCompleteListener {
-            override fun onComplete(list: List<DownloadInfo>) {
-                if (list.isNotEmpty()) {
-                    ThreadUtils.postToMainThread {
-                        for (tempInfo in list) {
-                            for (i in 0 until downloadInfoPack.list.size) {
-                                val info = downloadInfoPack.list.get(i)
-                                if (info.downloadId == tempInfo.downloadId) {
-                                    info.sizeTotal = tempInfo.sizeTotal
-                                    info.sizeSoFar = tempInfo.sizeSoFar
+        repository.queryDownloadingItems(runningDownloadIds,
+            object : DownloadInfoRepository.OnQueryListCompleteListener {
+                override fun onComplete(list: List<DownloadInfo>) {
+                    if (list.isNotEmpty()) {
+                        ThreadUtils.postToMainThread {
+                            for (tempInfo in list) {
+                                for (i in 0 until downloadInfoPack.list.size) {
+                                    val info = downloadInfoPack.list.get(i)
+                                    if (info.downloadId == tempInfo.downloadId) {
+                                        info.sizeTotal = tempInfo.sizeTotal
+                                        info.sizeSoFar = tempInfo.sizeSoFar
 
-                                    downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
-                                    downloadInfoPack.index = i.toLong()
-                                    downloadInfoObservable.value = downloadInfoPack
-                                    break
+                                        downloadInfoPack.notifyType =
+                                            DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
+                                        downloadInfoPack.index = i.toLong()
+                                        downloadInfoObservable.value = downloadInfoPack
+                                        break
+                                    }
                                 }
                             }
                         }
+                        progressUpdateListener?.onCompleteUpdate()
+                    } else {
+                        // no running items, remove update
+                        progressUpdateListener?.onStopUpdate()
                     }
-                    progressUpdateListener?.onCompleteUpdate()
-                } else {
-                    // no running items, remove update
-                    progressUpdateListener?.onStopUpdate()
                 }
-            }
-        })
+            })
     }
 
     fun markAllItemsAreRead() {

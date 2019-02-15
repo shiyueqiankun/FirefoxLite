@@ -57,9 +57,8 @@ private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 private const val ACTION_DOWNLOAD = 0
 
-class BrowserFragment : LocaleAwareFragment(),
-        ScreenNavigator.BrowserScreen,
-        BackKeyHandleable {
+class BrowserFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
+    BackKeyHandleable {
 
     private var listener: FragmentListener? = null
 
@@ -82,9 +81,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
@@ -118,17 +115,17 @@ class BrowserFragment : LocaleAwareFragment(),
         view.findViewById<View>(R.id.btn_search).setOnClickListener { onSearchClicked() }
         view.findViewById<View>(R.id.btn_delete).setOnClickListener { onDeleteClicked() }
 
-        btnLoad = (view.findViewById<ImageButton>(R.id.btn_load))
-                .also { it.setOnClickListener { onLoadClicked() } }
+        btnLoad =
+            (view.findViewById<ImageButton>(R.id.btn_load)).also { it.setOnClickListener { onLoadClicked() } }
 
-        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton)
-                .also {
-                    it.isEnabled = false
-                    it.setOnClickListener { onNextClicked() }
-                }
+        btnNext = (view.findViewById<View>(R.id.btn_next) as ImageButton).also {
+            it.isEnabled = false
+            it.setOnClickListener { onNextClicked() }
+        }
 
         view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
-            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+            (v.layoutParams as LinearLayout.LayoutParams).topMargin =
+                insets.systemWindowInsetTop
             insets
         }
         sessionManager = TabsSessionProvider.getOrThrow(activity)
@@ -160,19 +157,27 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onAttach(context: Context) {
         super.onAttach(context)
         permissionHandler = PermissionHandler(object : PermissionHandle {
-            override fun doActionDirect(permission: String?, actionId: Int, params: Parcelable?) {
+            override fun doActionDirect(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
 
                 this@BrowserFragment.context?.also {
                     val download = params as Download
 
-                    if (PackageManager.PERMISSION_GRANTED ==
-                            ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(
+                            it, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
                     ) {
                         // We do have the permission to write to the external storage. Proceed with the download.
                         queueDownload(download)
                     }
                 } ?: run {
-                    Log.e("BrowserFragment.kt", "No context to use, abort callback onDownloadStart")
+                    Log.e(
+                        "BrowserFragment.kt",
+                        "No context to use, abort callback onDownloadStart"
+                    )
                 }
             }
 
@@ -181,44 +186,58 @@ class BrowserFragment : LocaleAwareFragment(),
                 queueDownload(download)
             }
 
-            override fun doActionGranted(permission: String?, actionId: Int, params: Parcelable?) {
+            override fun doActionGranted(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
                 actionDownloadGranted(params)
             }
 
-            override fun doActionSetting(permission: String?, actionId: Int, params: Parcelable?) {
+            override fun doActionSetting(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
                 actionDownloadGranted(params)
             }
 
             override fun doActionNoPermission(
-                permission: String?,
-                actionId: Int,
-                params: Parcelable?
+                permission: String?, actionId: Int, params: Parcelable?
             ) {
             }
 
             override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
                 activity?.also {
                     return PermissionHandler.makeAskAgainSnackBar(
-                            this@BrowserFragment,
-                            it.findViewById(R.id.container),
-                            R.string.permission_toast_storage
+                        this@BrowserFragment,
+                        it.findViewById(R.id.container),
+                        R.string.permission_toast_storage
                     )
                 }
                 throw IllegalStateException("No Activity to show Snackbar.")
             }
 
             override fun permissionDeniedToast(actionId: Int) {
-                Toast.makeText(getContext(), R.string.permission_toast_storage_deny, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    getContext(), R.string.permission_toast_storage_deny, Toast.LENGTH_LONG
+                ).show()
             }
 
             override fun requestPermissions(actionId: Int) {
-                this@BrowserFragment.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId)
+                this@BrowserFragment.requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId
+                )
             }
 
             private fun queueDownload(download: Download?) {
                 activity?.let { activity ->
                     download?.let {
-                        EnqueueDownloadTask(activity, it, displayUrlView.text.toString()).execute()
+                        EnqueueDownloadTask(
+                            activity,
+                            it,
+                            displayUrlView.text.toString()
+                        ).execute()
                     }
                 }
             }
@@ -383,10 +402,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
         override fun onLongPress(session: Session, hitTarget: HitTarget) {
             fragment.activity?.let {
-                WebContextMenu.show(true,
-                        it,
-                        PrivateDownloadCallback(fragment, session.url),
-                        hitTarget)
+                WebContextMenu.show(
+                    true, it, PrivateDownloadCallback(fragment, session.url), hitTarget
+                )
             }
         }
 
@@ -457,8 +475,7 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun onDownload(
-            session: Session,
-            download: mozilla.components.browser.session.Download
+            session: Session, download: mozilla.components.browser.session.Download
         ): Boolean {
             val activity = fragment.activity
             if (activity == null || !activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
@@ -466,25 +483,23 @@ class BrowserFragment : LocaleAwareFragment(),
             }
 
             val d = Download(
-                    download.url,
-                    download.fileName,
-                    download.userAgent!!,
-                    "",
-                    download.contentType!!,
-                    download.contentLength!!,
-                    false
-                    )
+                download.url,
+                download.fileName,
+                download.userAgent!!,
+                "",
+                download.contentType!!,
+                download.contentLength!!,
+                false
+            )
             fragment.permissionHandler.tryAction(
-                    fragment,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    ACTION_DOWNLOAD,
-                    d
-                    )
+                fragment, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, d
+            )
             return true
         }
     }
 
-    class PrivateDownloadCallback(val fragment: BrowserFragment, val refererUrl: String?) : DownloadCallback {
+    class PrivateDownloadCallback(val fragment: BrowserFragment, val refererUrl: String?) :
+        DownloadCallback {
         override fun onDownloadStart(download: Download) {
             fragment.activity?.let {
                 if (!it.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
@@ -493,11 +508,8 @@ class BrowserFragment : LocaleAwareFragment(),
             }
 
             fragment.permissionHandler.tryAction(
-                    fragment,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    ACTION_DOWNLOAD,
-                    download
-                    )
+                fragment, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_DOWNLOAD, download
+            )
         }
     }
 }

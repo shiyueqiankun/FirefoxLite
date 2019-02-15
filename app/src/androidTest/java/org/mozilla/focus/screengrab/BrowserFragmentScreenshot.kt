@@ -36,41 +36,61 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
 
     @JvmField
     @Rule
-    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
     @JvmField
     @Rule
-    var activityTestRule: ActivityTestRule<MainActivity> = object : ActivityTestRule<MainActivity>(MainActivity::class.java, true, false) {
-        override fun beforeActivityLaunched() {
-            super.beforeActivityLaunched()
+    var activityTestRule: ActivityTestRule<MainActivity> =
+        object : ActivityTestRule<MainActivity>(MainActivity::class.java, true, false) {
+            override fun beforeActivityLaunched() {
+                super.beforeActivityLaunched()
 
-            webServer = MockWebServer()
+                webServer = MockWebServer()
 
-            try {
-                webServer.enqueue(MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset(HTML_FILE_FULL_SCREEN_IMAGE))
-                        .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"))
-                webServer.enqueue(MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset(IMAGE_FILE_NAME_DOWNLOADED)))
-                webServer.enqueue(MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset(IMAGE_FILE_NAME_DOWNLOADED)))
+                try {
+                    webServer.enqueue(
+                        MockResponse().setBody(
+                            AndroidTestUtils.readTestAsset(
+                                HTML_FILE_FULL_SCREEN_IMAGE
+                            )
+                        ).addHeader(
+                            "Set-Cookie",
+                            "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"
+                        )
+                    )
+                    webServer.enqueue(
+                        MockResponse().setBody(
+                            AndroidTestUtils.readTestAsset(
+                                IMAGE_FILE_NAME_DOWNLOADED
+                            )
+                        )
+                    )
+                    webServer.enqueue(
+                        MockResponse().setBody(
+                            AndroidTestUtils.readTestAsset(
+                                IMAGE_FILE_NAME_DOWNLOADED
+                            )
+                        )
+                    )
 
-                webServer.start()
-            } catch (e: IOException) {
-                throw AssertionError("Could not start web server", e)
+                    webServer.start()
+                } catch (e: IOException) {
+                    throw AssertionError("Could not start web server", e)
+                }
+            }
+
+            override fun afterActivityFinished() {
+                super.afterActivityFinished()
+                try {
+                    webServer.close()
+                    webServer.shutdown()
+                } catch (e: IOException) {
+                    throw AssertionError("Could not stop web server", e)
+                }
             }
         }
-
-        override fun afterActivityFinished() {
-            super.afterActivityFinished()
-            try {
-                webServer.close()
-                webServer.shutdown()
-            } catch (e: IOException) {
-                throw AssertionError("Could not stop web server", e)
-            }
-        }
-    }
 
     @Before
     fun setUp() {
@@ -84,7 +104,9 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
     fun screenshotBrowserFragment() {
 
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_PATH).toString())
+            loadPageFromHomeSearchField(
+                activityTestRule.activity, webServer.url(TEST_PATH).toString()
+            )
             longClickOnWebViewContent(activityTestRule.activity)
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_CONTEXT_MENU)
             clickOpenLinkInNewTab()
@@ -94,7 +116,11 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_ERROR_PAGE)
 
             // Simulate show no storage permission snackbar
-            MockUIUtils.showSnackbarAndWait(activityTestRule.activity, R.string.permission_toast_location, R.string.permission_handler_permission_dialog_setting)
+            MockUIUtils.showSnackbarAndWait(
+                activityTestRule.activity,
+                R.string.permission_toast_location,
+                R.string.permission_handler_permission_dialog_setting
+            )
             checkNoLocationPermissionSnackbarIsDisplayed()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_NO_LOCATION_SNACKBAR)
 
@@ -110,7 +136,9 @@ class BrowserFragmentScreenshot : BaseScreenshot() {
     @Test
     fun screenshotTabTray() {
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_PATH).toString())
+            loadPageFromHomeSearchField(
+                activityTestRule.activity, webServer.url(TEST_PATH).toString()
+            )
             clickTabTray()
             takeScreenshotViaFastlane(ScreenshotNamingUtils.BROWSER_TAB_TRAY)
             clickCloseAllTabs()

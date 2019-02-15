@@ -15,9 +15,11 @@ import kotlinx.android.synthetic.main.quick_search_item.view.quick_search_img
 import org.mozilla.focus.R
 import org.mozilla.icon.FavIconUtils
 
-class QuickSearchAdapter(private val clickListener: (QuickSearch) -> Unit) : ListAdapter<QuickSearch, QuickSearchAdapter.EngineViewHolder>(QuickSearchDiffCallback()) {
+class QuickSearchAdapter(private val clickListener: (QuickSearch) -> Unit) :
+    ListAdapter<QuickSearch, QuickSearchAdapter.EngineViewHolder>(QuickSearchDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): EngineViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.quick_search_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.quick_search_item, parent, false)
         return EngineViewHolder(itemView)
     }
 

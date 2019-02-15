@@ -43,10 +43,14 @@ class PrivateSessionNotificationService : Service() {
 
     private fun showNotification() {
 
-        val builder = NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
+        val builder =
+            NotificationUtil.baseBuilder(applicationContext, NotificationUtil.Channel.PRIVATE)
                 .setContentTitle(getString(R.string.private_browsing_erase_message))
-                .setContentIntent(buildPendingIntent(true))
-                .addAction(R.drawable.private_browsing_mask, getString(R.string.private_browsing_open_action), buildPendingIntent(false))
+                .setContentIntent(buildPendingIntent(true)).addAction(
+                    R.drawable.private_browsing_mask,
+                    getString(R.string.private_browsing_open_action),
+                    buildPendingIntent(false)
+                )
 
         startForeground(NotificationId.PRIVATE_MODE, builder.build())
     }
@@ -60,10 +64,9 @@ class PrivateSessionNotificationService : Service() {
 
     private fun buildPendingIntent(sanitize: Boolean): PendingIntent {
         val intent = buildIntent(this, sanitize)
-        return PendingIntent.getActivity(applicationContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(
+            applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
 
     companion object {

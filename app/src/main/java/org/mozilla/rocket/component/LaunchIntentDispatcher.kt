@@ -15,9 +15,9 @@ import org.mozilla.focus.widget.DefaultBrowserPreference
 class LaunchIntentDispatcher {
 
     enum class LaunchMethod(val value: String) {
-        EXTRA_BOOL_WEB_SEARCH("web_search"),
-        EXTRA_BOOL_TEXT_SELECTION("text_selection"),
-        EXTRA_BOOL_HOME_SCREEN_SHORTCUT("shortcut")
+        EXTRA_BOOL_WEB_SEARCH("web_search"), EXTRA_BOOL_TEXT_SELECTION("text_selection"), EXTRA_BOOL_HOME_SCREEN_SHORTCUT(
+            "shortcut"
+        )
     }
 
     enum class Command(val value: String) {
@@ -39,7 +39,11 @@ class LaunchIntentDispatcher {
             /**
              * This extra is passed when we click our icon in mobile launcher
              * */
-            if (intent.getBooleanExtra(LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.value, false)) {
+            if (intent.getBooleanExtra(
+                    LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.value,
+                    false
+                )
+            ) {
                 TelemetryWrapper.launchByHomeScreenShortcutEvent()
                 return Action.NORMAL
             }
@@ -64,7 +68,11 @@ class LaunchIntentDispatcher {
              *  This intent is used when we want to set default browser on Android L, see [DefaultBrowserPreference]
              *  Called by the internal app, doesn't count as a launch event
              * */
-            if (intent.getBooleanExtra(DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER, false)) {
+            if (intent.getBooleanExtra(
+                    DefaultBrowserPreference.EXTRA_RESOLVE_BROWSER,
+                    false
+                )
+            ) {
                 context.startActivity(Intent(context, SettingsActivity::class.java))
                 // called by internal app, doesn't count as a launch event
                 return Action.HANDLED
@@ -90,7 +98,11 @@ class LaunchIntentDispatcher {
                     Command.SET_DEFAULT.value -> {
                         if (!IntentUtils.openDefaultAppsSettings(context)) {
                             intent.action = Intent.ACTION_VIEW
-                            intent.data = Uri.parse(SupportUtils.getSumoURLForTopic(context, "rocket-default"))
+                            intent.data = Uri.parse(
+                                SupportUtils.getSumoURLForTopic(
+                                    context, "rocket-default"
+                                )
+                            )
                             return Action.NORMAL
                         } else {
                             return Action.HANDLED

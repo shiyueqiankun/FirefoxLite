@@ -5,7 +5,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import org.mozilla.focus.download.DownloadInfo
 
-class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
+class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository) :
+    ViewModel() {
 
     enum class Status {
         DEFAULT, DOWNLOADING, UNREAD
@@ -14,7 +15,8 @@ class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository)
     val downloadIndicatorObservable = MutableLiveData<Status>()
 
     fun updateIndicator() {
-        repository.queryIndicatorStatus(object : DownloadInfoRepository.OnQueryListCompleteListener {
+        repository.queryIndicatorStatus(object :
+            DownloadInfoRepository.OnQueryListCompleteListener {
             override fun onComplete(list: List<DownloadInfo>) {
                 var hasDownloading = false
                 var hasUnread = false

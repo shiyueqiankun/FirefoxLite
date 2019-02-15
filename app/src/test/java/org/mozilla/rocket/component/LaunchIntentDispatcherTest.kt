@@ -9,7 +9,7 @@ import org.robolectric.RuntimeEnvironment
 // @RunWith(RobolectricTestRunner::class)
 class LaunchIntentDispatcherTest {
 
-//    @Test
+    //    @Test
     fun dispatch() {
         val command = Intent()
         command.putExtra(PUSH_COMMAND, LaunchIntentDispatcher.Command.SET_DEFAULT.value)

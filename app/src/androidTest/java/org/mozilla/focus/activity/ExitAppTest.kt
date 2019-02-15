@@ -25,12 +25,15 @@ class ExitAppTest {
 
     @JvmField
     @Rule
-    val filePermissionRule: GrantPermissionRule =
-        GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+    val filePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE
+    )
 
     @JvmField
     @Rule
-    val activityTestRule = ActivityTestRule(MainActivity::class.java, true, false)
+    val activityTestRule = ActivityTestRule(
+        MainActivity::class.java, true, false
+    )
 
     @Before
     fun setUp() {
@@ -61,7 +64,7 @@ class ExitAppTest {
         }
 
         // Check activity finishing or destroyed
-        assertTrue(activityTestRule.activity.isFinishing() || activityTestRule.activity.isDestroyed())
+        assertTrue(activityTestRule.activity.isFinishing() || activityTestRule.activity.isDestroyed)
     }
 
     /**
@@ -80,6 +83,6 @@ class ExitAppTest {
             clickExitApp()
         }
         // Check activity finishing or destroyed
-        assertTrue(activityTestRule.activity.isFinishing() || activityTestRule.activity.isDestroyed())
+        assertTrue(activityTestRule.activity.isFinishing() || activityTestRule.activity.isDestroyed)
     }
 }

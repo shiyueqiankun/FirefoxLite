@@ -23,15 +23,15 @@ class LocaleDataSource : QuickSearchDataSource {
 
         // It's an Application Context so it should be safe
         @SuppressLint("StaticFieldLeak")
-        @Volatile private var INSTANCE: LocaleDataSource? = null
+        @Volatile
+        private var INSTANCE: LocaleDataSource? = null
 
         @JvmStatic
-        fun getInstance(context: Context): LocaleDataSource? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: LocaleDataSource().also {
-                        INSTANCE = it
-                        it.context = context.applicationContext
-                    }
-                }
+        fun getInstance(context: Context): LocaleDataSource? = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: LocaleDataSource().also {
+                INSTANCE = it
+                it.context = context.applicationContext
+            }
+        }
     }
 }

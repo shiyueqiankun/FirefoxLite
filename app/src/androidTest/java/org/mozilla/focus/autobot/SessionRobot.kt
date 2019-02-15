@@ -33,16 +33,31 @@ class SessionRobot : MenuRobot() {
         sessionLoadedIdlingResource = SessionLoadedIdlingResource(activity)
 
         // Enter test site url
-        onView(Matchers.allOf<View>(withId(R.id.url_edit), isDisplayed())).perform(replaceText(url), pressImeActionButton())
+        onView(Matchers.allOf<View>(withId(R.id.url_edit), isDisplayed())).perform(
+            replaceText(url), pressImeActionButton()
+        )
 
         runWithIdleRes(sessionLoadedIdlingResource) {
-            onView(Matchers.allOf(withId(R.id.display_url), isDisplayed())).check(matches(withText(url)))
+            onView(Matchers.allOf(withId(R.id.display_url), isDisplayed())).check(
+                matches(
+                    withText(
+                        url
+                    )
+                )
+            )
         }
     }
 
     fun loadPageFromHomeSearchField(activity: MainActivity, url: String) {
         // Click search field
-        onView(Matchers.allOf<View>(withId(R.id.home_fragment_fake_input), isDisplayed())).perform(click())
+        onView(
+            Matchers.allOf<View>(
+                withId(R.id.home_fragment_fake_input),
+                isDisplayed()
+            )
+        ).perform(
+            click()
+        )
         loadPage(activity, url)
     }
 
@@ -57,18 +72,33 @@ class SessionRobot : MenuRobot() {
     }
 
     fun checkAddBookmarkSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit)))
-                .check(matches(isDisplayed()))
+        onView(
+            Matchers.allOf(
+                withId(android.support.design.R.id.snackbar_action),
+                withText(R.string.bookmark_saved_edit)
+            )
+        ).check(matches(isDisplayed()))
     }
 
     fun clickBookmarkSnackbarEdit() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_action), withText(R.string.bookmark_saved_edit))).perform(click())
+        onView(
+            Matchers.allOf(
+                withId(android.support.design.R.id.snackbar_action),
+                withText(R.string.bookmark_saved_edit)
+            )
+        ).perform(click())
     }
 
     fun checkRemoveBookmarkToastIsDisplayed(activity: Activity) {
-        onView(withText(R.string.bookmark_removed))
-                .inRoot(RootMatchers.withDecorView(Matchers.not<View>(Matchers.`is`<View>(activity.window.decorView))))
-                .check(matches(isDisplayed()))
+        onView(withText(R.string.bookmark_removed)).inRoot(
+            RootMatchers.withDecorView(
+                Matchers.not<View>(
+                    Matchers.`is`<View>(
+                        activity.window.decorView
+                    )
+                )
+            )
+        ).check(matches(isDisplayed()))
     }
 
     /** Screenshot related */
@@ -88,7 +118,8 @@ class SessionRobot : MenuRobot() {
         val displayMetrics = activity.resources.displayMetrics
         val displayWidth = displayMetrics.widthPixels
         val displayHeight = displayMetrics.heightPixels
-        onView(withId(R.id.main_content)).check(matches(isDisplayed())).perform(AndroidTestUtils.clickXY(displayWidth / 2, displayHeight / 2, Tap.LONG))
+        onView(withId(R.id.main_content)).check(matches(isDisplayed()))
+            .perform(AndroidTestUtils.clickXY(displayWidth / 2, displayHeight / 2, Tap.LONG))
     }
 
     fun clickOpenLinkInNewTab() {
@@ -96,19 +127,31 @@ class SessionRobot : MenuRobot() {
     }
 
     fun checkNewTabOpenedSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.new_background_tab_hint))).check(matches(isDisplayed()))
+        onView(
+            Matchers.allOf(
+                withId(android.support.design.R.id.snackbar_text),
+                withText(R.string.new_background_tab_hint)
+            )
+        ).check(matches(isDisplayed()))
     }
 
     fun checkNoLocationPermissionSnackbarIsDisplayed() {
-        onView(Matchers.allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.permission_toast_location))).check(matches(isDisplayed()))
+        onView(
+            Matchers.allOf(
+                withId(android.support.design.R.id.snackbar_text),
+                withText(R.string.permission_toast_location)
+            )
+        ).check(matches(isDisplayed()))
     }
 
     fun checkGeoPermissionDialogIsDisplayed() {
-        onView(withText(R.string.geolocation_dialog_allow)).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+        onView(withText(R.string.geolocation_dialog_allow)).inRoot(RootMatchers.isDialog())
+            .check(matches(isDisplayed()))
     }
 
     fun clickAllowGeoPermission() {
-        onView(withText(R.string.geolocation_dialog_allow)).inRoot(RootMatchers.isDialog()).perform(click())
+        onView(withText(R.string.geolocation_dialog_allow)).inRoot(RootMatchers.isDialog())
+            .perform(click())
     }
 
     fun clickTabTray() {
@@ -128,14 +171,12 @@ class SessionRobot : MenuRobot() {
     fun clickTextActionMore() {
         // Since text action popup menu is control by framework and we need to click overflow button to show the target string,
         // it's not easy to find a good way to let espresso track that button. So use ImageButton class name to find the target for now.
-        onView(withClassName(Matchers.containsString("ImageButton")))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .perform(click())
+        onView(withClassName(Matchers.containsString("ImageButton"))).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
     }
 
     fun checkSearchInRocketIsDisplayed() {
-        onView(withText(R.string.text_selection_search_action))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .check(matches(isDisplayed()))
+        onView(withText(R.string.text_selection_search_action)).inRoot(RootMatchers.isPlatformPopup())
+            .check(matches(isDisplayed()))
     }
 }

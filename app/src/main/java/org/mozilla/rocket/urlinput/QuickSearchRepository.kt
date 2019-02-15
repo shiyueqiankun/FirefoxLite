@@ -21,17 +21,16 @@ class QuickSearchRepository(
 
     companion object {
 
-        @Volatile private var INSTANCE: QuickSearchRepository? = null
+        @Volatile
+        private var INSTANCE: QuickSearchRepository? = null
 
         @JvmStatic
         fun getInstance(
-            globalDataSource: QuickSearchDataSource,
-            localeDataSource: QuickSearchDataSource
-        ): QuickSearchRepository? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: QuickSearchRepository(globalDataSource, localeDataSource).also {
-                        INSTANCE = it
-                    }
-                }
+            globalDataSource: QuickSearchDataSource, localeDataSource: QuickSearchDataSource
+        ): QuickSearchRepository? = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: QuickSearchRepository(globalDataSource, localeDataSource).also {
+                INSTANCE = it
+            }
+        }
     }
 }

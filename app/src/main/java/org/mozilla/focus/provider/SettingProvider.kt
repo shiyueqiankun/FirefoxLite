@@ -53,23 +53,25 @@ class SettingProvider : ContentProvider() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val bundle = Bundle()
         when (uriMatcher.match(uri)) {
-            GET_FLOAT -> bundle.putFloat(KEY, preferences.getFloat(key, java.lang.Float.parseFloat(defValue)))
-            GET_BOOLEAN -> bundle.putBoolean(KEY, preferences.getBoolean(key, java.lang.Boolean.parseBoolean(defValue)))
+            GET_FLOAT -> bundle.putFloat(
+                KEY, preferences.getFloat(key, java.lang.Float.parseFloat(defValue))
+            )
+            GET_BOOLEAN -> bundle.putBoolean(
+                KEY, preferences.getBoolean(key, java.lang.Boolean.parseBoolean(defValue))
+            )
             else -> throw IllegalArgumentException("Unknown uri：" + uri)
         }
         return BundleCursor(bundle)
     }
 
     override fun update(
-        uri: Uri,
-        values: ContentValues?,
-        selection: String?,
-        selectionArgs: Array<String>?
+        uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<String>?
     ): Int {
         throw UnsupportedOperationException("Not supported")
     }
 
-    private class BundleCursor internal constructor(private var bundle: Bundle?) : MatrixCursor(arrayOf(), 0) {
+    private class BundleCursor internal constructor(private var bundle: Bundle?) :
+        MatrixCursor(arrayOf(), 0) {
 
         override fun getExtras(): Bundle? {
             return bundle

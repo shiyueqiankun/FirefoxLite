@@ -23,8 +23,7 @@ import org.mozilla.focus.widget.FragmentListener.TYPE.SHOW_URL_INPUT
 import org.mozilla.focus.widget.FragmentListener.TYPE.TOGGLE_PRIVATE_MODE
 import org.mozilla.rocket.privately.SharedViewModel
 
-class PrivateHomeFragment : LocaleAwareFragment(),
-        ScreenNavigator.HomeScreen {
+class PrivateHomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private lateinit var btnBack: RelativeLayout
     private lateinit var lottieMask: LottieAnimationView
@@ -37,7 +36,9 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, state: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
         btnBack = view.findViewById(R.id.pm_home_back)
         lottieMask = view.findViewById(R.id.pm_home_mask)
@@ -70,13 +71,12 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     private fun observeViewModel() {
         activity?.apply {
             // since the view model is of the activity, use the fragment's activity instead of the fragment itself
-            ViewModelProviders.of(this).get(SharedViewModel::class.java)
-                    .urlInputState()
-                    .observe(this, Observer<Boolean> {
-                        it?.apply {
-                            onUrlInputScreenVisible(it)
-                        }
-                    })
+            ViewModelProviders.of(this).get(SharedViewModel::class.java).urlInputState()
+                .observe(this, Observer<Boolean> {
+                    it?.apply {
+                        onUrlInputScreenVisible(it)
+                    }
+                })
         }
     }
 

@@ -18,19 +18,20 @@ class HistoryRobot : MenuRobot() {
 
     fun clickListItemActionMenu(position: Int) {
         onView(withId(R.id.browsing_history_recycler_view)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, clickChildViewWithId(R.id.history_item_btn_more)))
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                position, clickChildViewWithId(R.id.history_item_btn_more)
+            )
+        )
     }
 
     fun checkItemMenuDeleteIsDisplayed() {
-        onView(withText(R.string.browsing_history_menu_delete))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .check(matches(isDisplayed()))
+        onView(withText(R.string.browsing_history_menu_delete)).inRoot(RootMatchers.isPlatformPopup())
+            .check(matches(isDisplayed()))
     }
 
     fun clickItemMenuDelete() {
-        onView(withText(R.string.browsing_history_menu_delete))
-                .inRoot(RootMatchers.isPlatformPopup())
-                .perform(click())
+        onView(withText(R.string.browsing_history_menu_delete)).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
     }
 
     fun clickClearBrowsingHistory() {
@@ -38,6 +39,10 @@ class HistoryRobot : MenuRobot() {
     }
 
     fun checkConfirmClearDialogIsDisplayed() {
-        onView(withText(R.string.browsing_history_dialog_confirm_clear_message)).check(matches(isDisplayed()))
+        onView(withText(R.string.browsing_history_dialog_confirm_clear_message)).check(
+            matches(
+                isDisplayed()
+            )
+        )
     }
 }

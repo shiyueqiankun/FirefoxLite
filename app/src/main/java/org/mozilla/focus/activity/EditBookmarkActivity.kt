@@ -31,9 +31,12 @@ class EditBookmarkActivity : BaseActivity() {
     private val itemId: String by lazy { intent.getStringExtra(ITEM_UUID_KEY) }
     private val viewModelFactory: BookmarkViewModel.Factory by lazy {
         BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)))
+            BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this))
+        )
     }
-    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(BookmarkViewModel::class.java) }
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(BookmarkViewModel::class.java)
+    }
     private lateinit var bookmark: BookmarkModel
     private val editTextName: EditText by lazy { findViewById<EditText>(R.id.bookmark_name) }
     private val editTextLocation: EditText by lazy { findViewById<EditText>(R.id.bookmark_location) }
@@ -77,22 +80,24 @@ class EditBookmarkActivity : BaseActivity() {
         }
     }
 
-    private val focusChangeListener: OnFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
-        when (v.id) {
-            R.id.bookmark_location -> {
-                labelLocation.isActivated = hasFocus
-            }
-            R.id.bookmark_name -> {
-                labelName.isActivated = hasFocus
+    private val focusChangeListener: OnFocusChangeListener =
+        OnFocusChangeListener { v, hasFocus ->
+            when (v.id) {
+                R.id.bookmark_location -> {
+                    labelLocation.isActivated = hasFocus
+                }
+                R.id.bookmark_name -> {
+                    labelName.isActivated = hasFocus
+                }
             }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_bookmark)
         setSupportActionBar(toolbar)
-        val drawable: Drawable = DrawableCompat.wrap(resources.getDrawable(R.drawable.edit_close, theme))
+        val drawable: Drawable =
+            DrawableCompat.wrap(resources.getDrawable(R.drawable.edit_close, theme))
         DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.paletteWhite100))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(drawable)
@@ -107,13 +112,14 @@ class EditBookmarkActivity : BaseActivity() {
             editTextLocation.text.clear()
         }
 
-        viewModel.getBookmarkById(itemId).observe(this, Observer<BookmarkModel> { bookmarkModel ->
-            bookmarkModel?.apply {
-                bookmark = bookmarkModel
-                editTextName.setText(bookmark.title)
-                editTextLocation.setText(bookmark.url)
-            }
-        })
+        viewModel.getBookmarkById(itemId)
+            .observe(this, Observer<BookmarkModel> { bookmarkModel ->
+                bookmarkModel?.apply {
+                    bookmark = bookmarkModel
+                    editTextName.setText(bookmark.title)
+                    editTextLocation.setText(bookmark.url)
+                }
+            })
     }
 
     override fun onDestroy() {
@@ -136,7 +142,8 @@ class EditBookmarkActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuItemSave = menu.add(Menu.NONE, SAVE_ACTION_ID, Menu.NONE, R.string.bookmark_edit_save)
+        menuItemSave =
+            menu.add(Menu.NONE, SAVE_ACTION_ID, Menu.NONE, R.string.bookmark_edit_save)
         menuItemSave.setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS)
         setupMenuItemSave()
         return true
@@ -145,7 +152,13 @@ class EditBookmarkActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             SAVE_ACTION_ID -> {
-                viewModel.updateBookmark(BookmarkModel(bookmark.id, editTextName.text.toString(), editTextLocation.text.toString()))
+                viewModel.updateBookmark(
+                    BookmarkModel(
+                        bookmark.id,
+                        editTextName.text.toString(),
+                        editTextLocation.text.toString()
+                    )
+                )
                 Toast.makeText(this, R.string.bookmark_edit_success, Toast.LENGTH_LONG).show()
                 finish()
             }

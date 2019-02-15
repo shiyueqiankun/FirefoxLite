@@ -96,7 +96,9 @@ class AdjustBrightnessDialog : BaseActivity() {
         val fromSetting = intent.getStringExtra(Intents.EXTRA_SOURCE) == Intents.SOURCE_SETTING
         val layoutParams = window.attributes
         Settings.getInstance(this).nightModeBrightnessValue = layoutParams.screenBrightness
-        TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)
+        TelemetryWrapper.nightModeBrightnessChangeTo(
+            Constants.valueToProgress(layoutParams.screenBrightness), fromSetting
+        )
     }
 
     override fun applyLocale() {

@@ -18,13 +18,13 @@ import org.mozilla.focus.utils.RemoteConfigConstants
 import org.mozilla.focus.utils.Settings
 
 class FeatureSurveyViewHelper internal constructor(
-    private val context: Context,
-    private val featureSurvey: RemoteConfigConstants.SURVEY
+    private val context: Context, private val featureSurvey: RemoteConfigConstants.SURVEY
 ) : View.OnClickListener {
 
     object Constants {
         const val DISMISS_DELAY: Long = 5000
-        const val LINK_RECOMMEND_VPN: String = "https://www.expressvpn.com/download-app?a_fid=MozillaFirefoxLite"
+        const val LINK_RECOMMEND_VPN: String =
+            "https://www.expressvpn.com/download-app?a_fid=MozillaFirefoxLite"
         const val PACKAGE_RECOMMEND_VPN: String = "com.expressvpn.vpn"
     }
 
@@ -71,13 +71,17 @@ class FeatureSurveyViewHelper internal constructor(
                     if (eventHistory.contains(Settings.Event.FeatureSurveyWifiFinding)) {
                         v.visibility = View.GONE
                     } else {
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER
+                        )
                     }
                 } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                     if (eventHistory.contains(Settings.Event.FeatureSurveyVpn)) {
                         v.visibility = View.GONE
                     } else {
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.VPN)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.VPN
+                        )
                     }
                 } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {
                     TelemetryWrapper.dismissVpnRecommend()
@@ -95,38 +99,48 @@ class FeatureSurveyViewHelper internal constructor(
                     }
                     TelemetryWrapper.clickVpnRecommend(true)
                 } else {
-                    textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
+                    textContent.text =
+                        context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
                     btnNo.visibility = View.GONE
                     if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING) {
                         eventHistory.add(Settings.Event.FeatureSurveyWifiFinding)
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER
+                        )
                     } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                         eventHistory.add(Settings.Event.FeatureSurveyVpn)
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.VPN)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.VPN
+                        )
                     }
                     dismissSurveyView(v)
                 }
             }
             btnNo.setOnClickListener { _ ->
                 if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER) {
-                    Settings.getInstance(context).eventHistory.add(Settings.Event.VpnRecommenderIgnore)
+                    Settings.getInstance(context)
+                        .eventHistory.add(Settings.Event.VpnRecommenderIgnore)
                     parentView.removeView(rootView)
                     isViewInit = false
                     v.visibility = View.GONE
                     TelemetryWrapper.clickVpnRecommend(false)
                 } else {
-                    textContent.text = context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
+                    textContent.text =
+                        context.getString(R.string.exp_survey_thanks, "\uD83D\uDE00")
                     btnYes.visibility = View.GONE
                     btnNo.visibility = View.GONE
                     if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING) {
                         eventHistory.add(Settings.Event.FeatureSurveyWifiFinding)
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER
+                        )
                     } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN) {
                         eventHistory.add(Settings.Event.FeatureSurveyVpn)
-                        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.VPN)
-                    } else
-                        dismissSurveyView(v)
+                        TelemetryWrapper.surveyResult(
+                            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.VPN
+                        )
+                    } else dismissSurveyView(v)
                 }
             }
         }

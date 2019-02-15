@@ -10,13 +10,16 @@ open class ThemedRecyclerView : RecyclerView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context, attrs, defStyleAttr
+    )
 
     /**
      * Utilize adding a custom view state ThemedWidgetUtils.STATE_NIGHT_MODE to drawable states list and turn this state on when night mode is enabled. */
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
-            val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
+            val drawableState =
+                super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {

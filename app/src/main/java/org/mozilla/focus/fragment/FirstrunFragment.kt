@@ -45,7 +45,8 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        val transition = TransitionInflater.from(context).inflateTransition(R.transition.firstrun_exit)
+        val transition =
+            TransitionInflater.from(context).inflateTransition(R.transition.firstrun_exit)
 
         exitTransition = transition
 
@@ -56,9 +57,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_firstrun, container, false)
         view.isClickable = true
@@ -76,7 +75,9 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
         viewPager = view.findViewById<View>(R.id.pager) as ViewPager
 
-        viewPager.setPageTransformer(true) { page, position -> page.alpha = 1 - 0.5f * Math.abs(position) }
+        viewPager.setPageTransformer(true) { page, position ->
+            page.alpha = 1 - 0.5f * Math.abs(position)
+        }
 
         viewPager.clipToPadding = false
         viewPager.adapter = adapter
@@ -88,20 +89,25 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
                 if (newIdx % 2 == 0) {
                     // next page is even number
-                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_even, nextDrawable)
+                    bgTransitionDrawable.setDrawableByLayerId(
+                        R.id.first_run_bg_even,
+                        nextDrawable
+                    )
                     bgTransitionDrawable.reverseTransition(duration) // odd -> even
                 } else {
                     // next page is odd number
-                    bgTransitionDrawable.setDrawableByLayerId(R.id.first_run_bg_odd, nextDrawable)
+                    bgTransitionDrawable.setDrawableByLayerId(
+                        R.id.first_run_bg_odd,
+                        nextDrawable
+                    )
                     bgTransitionDrawable.startTransition(duration) // even -> odd
                 }
             }
 
             override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {}
+                position: Int, positionOffset: Float, positionOffsetPixels: Int
+            ) {
+            }
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
@@ -141,7 +147,8 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         return this
     }
 
-    private fun isSystemApp() = context?.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0
+    private fun isSystemApp() =
+        context?.applicationInfo?.flags?.and(ApplicationInfo.FLAG_SYSTEM) != 0
 
     private fun promoteSetDefaultBrowserIfPreload(): FirstrunFragment {
         // if it's a system app(preload), we'll like to promote set default browser when the user finish first run
@@ -151,7 +158,9 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         return this
     }
 
-    private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
+    private fun findPagerAdapter(
+        context: Context, onClickListener: View.OnClickListener
+    ): PagerAdapter? {
         val pagerAdapter: PagerAdapter?
         val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
         pagerAdapter = if (!shown) {
@@ -174,7 +183,12 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
     // lots of drawable resources
     private fun initDrawables() {
-        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme))
+        bgDrawables = arrayOf(
+            resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),
+            resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),
+            resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme),
+            resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme)
+        )
 
         bgTransitionDrawable = TransitionDrawable(bgDrawables)
         bgTransitionDrawable.setId(0, R.id.first_run_bg_even)

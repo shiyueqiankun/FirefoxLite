@@ -41,7 +41,8 @@ class FindInPage : BackKeyHandleable {
         closeBtn = container.findViewById(R.id.find_in_page_close_btn)
 
         resultFormat = container.context.getString(R.string.find_in_page_result)
-        accessibilityFormat = container.context.getString(R.string.accessibility_find_in_page_result)
+        accessibilityFormat =
+            container.context.getString(R.string.accessibility_find_in_page_result)
 
         initViews()
     }
@@ -64,7 +65,8 @@ class FindInPage : BackKeyHandleable {
             // increment it by one.
             val ordinal = activeMatchOrdinal + 1
             resultText.text = String.format(resultFormat, ordinal, numOfMatches)
-            resultText.contentDescription = String.format(accessibilityFormat, ordinal, numOfMatches)
+            resultText.contentDescription =
+                String.format(accessibilityFormat, ordinal, numOfMatches)
         } else {
             resultText.text = ""
             resultText.contentDescription = ""
@@ -125,7 +127,12 @@ class FindInPage : BackKeyHandleable {
             override fun afterTextChanged(s: Editable?) {
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

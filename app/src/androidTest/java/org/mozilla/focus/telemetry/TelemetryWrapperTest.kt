@@ -33,12 +33,10 @@ class TelemetryWrapperTest {
     }
 
     private fun assertFirebaseEvent(
-        category: String,
-        method: String,
-        `object`: String?,
-        value: String
+        category: String, method: String, `object`: String?, value: String
     ) {
-        val eventFromBuilder = TelemetryWrapper.EventBuilder(category, method, `object`, value).firebaseEvent
+        val eventFromBuilder =
+            TelemetryWrapper.EventBuilder(category, method, `object`, value).firebaseEvent
         val event = FirebaseEvent(category, method, `object`, value)
         assert(event == eventFromBuilder)
     }
@@ -47,7 +45,12 @@ class TelemetryWrapperTest {
     fun toggleFirstRunPageEvent() {
 
         // TelemetryWrapper.toggleFirstRunPageEvent(false);
-        assertFirebaseEvent(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, TelemetryWrapper.Object.FIRSTRUN, TelemetryWrapper.Value.TURBO)
+        assertFirebaseEvent(
+            TelemetryWrapper.Category.ACTION,
+            TelemetryWrapper.Method.CHANGE,
+            TelemetryWrapper.Object.FIRSTRUN,
+            TelemetryWrapper.Value.TURBO
+        )
     }
 
     @Test
@@ -67,7 +70,8 @@ class TelemetryWrapperTest {
 
     @Test
     fun settingsEvent() {
-        val pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
+        val pm =
+            PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
         for (key in pm.all.keys) {
 
             TelemetryWrapper.settingsEvent(key, java.lang.Boolean.FALSE.toString())
@@ -76,7 +80,8 @@ class TelemetryWrapperTest {
 
     @Test
     fun settingsClickEvent() {
-        val pm = PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
+        val pm =
+            PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().targetContext)
         for (key in pm.all.keys) {
             // invalid events should be by pass
             TelemetryWrapper.settingsClickEvent(key)
@@ -104,7 +109,9 @@ class TelemetryWrapperTest {
                 locale = Locales.parseLocaleCode(value)
                 localeManager.setSelectedLocale(context, value)
             }
-            TelemetryWrapper.settingsLocaleChangeEvent(context.getString(R.string.pref_key_locale), locale.toString(), false)
+            TelemetryWrapper.settingsLocaleChangeEvent(
+                context.getString(R.string.pref_key_locale), locale.toString(), false
+            )
         }
     }
 
@@ -477,24 +484,42 @@ class TelemetryWrapperTest {
 
     @Test
     fun feedbackClickEventContextualHint() {
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS
+        )
     }
 
     @Test
     fun feedbackClickEventSetting() {
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Extra_Value.SETTING
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.SETTING
+        )
     }
 
     @Test
     fun clickRateAppNotification() {
         TelemetryWrapper.clickRateApp(null, TelemetryWrapper.Extra_Value.NOTIFICATION)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.NOTIFICATION)
-        TelemetryWrapper.clickRateApp(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION)
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Extra_Value.NOTIFICATION
+        )
+        TelemetryWrapper.clickRateApp(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.NOTIFICATION
+        )
     }
 
     @Test
@@ -514,14 +539,22 @@ class TelemetryWrapperTest {
 
     @Test
     fun promoteShareClickEventSetting() {
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING)
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.SETTING)
+        TelemetryWrapper.promoteShareClickEvent(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.SETTING
+        )
+        TelemetryWrapper.promoteShareClickEvent(
+            TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.SETTING
+        )
     }
 
     @Test
     fun promoteShareClickEventSettingContextualHints() {
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
-        TelemetryWrapper.promoteShareClickEvent(TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS)
+        TelemetryWrapper.promoteShareClickEvent(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS
+        )
+        TelemetryWrapper.promoteShareClickEvent(
+            TelemetryWrapper.Value.SHARE, TelemetryWrapper.Extra_Value.CONTEXTUAL_HINTS
+        )
     }
 
     @Test
@@ -540,7 +573,12 @@ class TelemetryWrapperTest {
 
         // whitelist-ed pref key should worked with firebaseEvent and telemetryEvent
         for (validKey in FirebaseEvent.getPrefKeyWhitelist().values) {
-            TelemetryWrapper.EventBuilder(TelemetryWrapper.Category.ACTION, TelemetryWrapper.Method.CHANGE, SETTING, validKey)
+            TelemetryWrapper.EventBuilder(
+                TelemetryWrapper.Category.ACTION,
+                TelemetryWrapper.Method.CHANGE,
+                SETTING,
+                validKey
+            )
         }
     }
 
@@ -556,11 +594,23 @@ class TelemetryWrapperTest {
 
     @Test
     fun surveyFeedback() {
-        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.VPN)
-        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.VPN)
-        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER)
-        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER)
-        TelemetryWrapper.surveyResult(TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER)
+        TelemetryWrapper.surveyResult(
+            TelemetryWrapper.Value.POSITIVE,
+            TelemetryWrapper.Value.VPN
+        )
+        TelemetryWrapper.surveyResult(
+            TelemetryWrapper.Value.NEGATIVE,
+            TelemetryWrapper.Value.VPN
+        )
+        TelemetryWrapper.surveyResult(
+            TelemetryWrapper.Value.DISMISS, TelemetryWrapper.Value.WIFI_FINDER
+        )
+        TelemetryWrapper.surveyResult(
+            TelemetryWrapper.Value.POSITIVE, TelemetryWrapper.Value.WIFI_FINDER
+        )
+        TelemetryWrapper.surveyResult(
+            TelemetryWrapper.Value.NEGATIVE, TelemetryWrapper.Value.WIFI_FINDER
+        )
     }
 
     @Test

@@ -32,11 +32,8 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
-class PrivateModeActivity : BaseActivity(),
-        FragmentListener,
-        ScreenNavigator.Provider,
-        ScreenNavigator.HostActivity,
-        TabsSessionProvider.SessionHost {
+class PrivateModeActivity : BaseActivity(), FragmentListener, ScreenNavigator.Provider,
+    ScreenNavigator.HostActivity, TabsSessionProvider.SessionHost {
 
     private var sessionManager: SessionManager? = null
     private lateinit var tabViewProvider: PrivateTabViewProvider
@@ -143,7 +140,10 @@ class PrivateModeActivity : BaseActivity(),
         return PrivateHomeFragment.create()
     }
 
-    override fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen {
+    override fun createUrlInputScreen(
+        url: String?,
+        parentFragmentTag: String?
+    ): UrlInputScreen {
         return UrlInputFragment.create(url, null, false)
     }
 
@@ -168,9 +168,7 @@ class PrivateModeActivity : BaseActivity(),
     private fun openUrl(payload: Any?) {
         val url = payload?.toString() ?: ""
 
-        ViewModelProviders.of(this)
-                .get(SharedViewModel::class.java)
-                .setUrl(url)
+        ViewModelProviders.of(this).get(SharedViewModel::class.java).setUrl(url)
 
         dismissUrlInput()
         startPrivateMode()
@@ -180,7 +178,8 @@ class PrivateModeActivity : BaseActivity(),
     private fun makeStatusBarTransparent() {
         var visibility = window.decorView.systemUiVisibility
         // do not overwrite existing value
-        visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        visibility =
+            visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
         window.decorView.systemUiVisibility = visibility
     }
 
@@ -200,7 +199,8 @@ class PrivateModeActivity : BaseActivity(),
         if (intent?.action == PrivateMode.INTENT_EXTRA_SANITIZE) {
             TelemetryWrapper.erasePrivateModeNotification()
             stopPrivateMode()
-            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.private_browsing_erase_done, Toast.LENGTH_LONG)
+                .show()
             finishAndRemoveTask()
             return true
         }

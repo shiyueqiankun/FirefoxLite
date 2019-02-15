@@ -27,41 +27,54 @@ class BookmarksScreenshot : BaseScreenshot() {
 
     @JvmField
     @Rule
-    var activityTestRule: ActivityTestRule<MainActivity> = object : ActivityTestRule<MainActivity>(MainActivity::class.java, true, false) {
-        override fun beforeActivityLaunched() {
-            super.beforeActivityLaunched()
+    var activityTestRule: ActivityTestRule<MainActivity> =
+        object : ActivityTestRule<MainActivity>(MainActivity::class.java, true, false) {
+            override fun beforeActivityLaunched() {
+                super.beforeActivityLaunched()
 
-            webServer = MockWebServer()
-            try {
-                webServer.enqueue(MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset(HTML_FILE_GET_LOCATION))
-                        .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"))
-                webServer.enqueue(MockResponse()
-                        .setBody(AndroidTestUtils.readTestAsset(HTML_FILE_GET_LOCATION))
-                        .addHeader("Set-Cookie", "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"))
-                webServer.start()
-            } catch (e: IOException) {
-                throw AssertionError("Could not start web server", e)
+                webServer = MockWebServer()
+                try {
+                    webServer.enqueue(
+                        MockResponse().setBody(
+                            AndroidTestUtils.readTestAsset(
+                                HTML_FILE_GET_LOCATION
+                            )
+                        ).addHeader(
+                            "Set-Cookie",
+                            "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"
+                        )
+                    )
+                    webServer.enqueue(
+                        MockResponse().setBody(
+                            AndroidTestUtils.readTestAsset(
+                                HTML_FILE_GET_LOCATION
+                            )
+                        ).addHeader(
+                            "Set-Cookie",
+                            "sphere=battery; Expires=Wed, 21 Oct 2035 07:28:00 GMT;"
+                        )
+                    )
+                    webServer.start()
+                } catch (e: IOException) {
+                    throw AssertionError("Could not start web server", e)
+                }
+            }
+
+            override fun afterActivityFinished() {
+                super.afterActivityFinished()
+
+                try {
+                    webServer.close()
+                    webServer.shutdown()
+                } catch (e: IOException) {
+                    throw AssertionError("Could not stop web server", e)
+                }
             }
         }
-
-        override fun afterActivityFinished() {
-            super.afterActivityFinished()
-
-            try {
-                webServer.close()
-                webServer.shutdown()
-            } catch (e: IOException) {
-                throw AssertionError("Could not stop web server", e)
-            }
-        }
-    }
 
     @Before
     fun setUp() {
-        BeforeTestTask.Builder()
-                .build()
-                .execute()
+        BeforeTestTask.Builder().build().execute()
         activityTestRule.launchActivity(Intent())
         Screengrab.setDefaultScreenshotStrategy(FalconScreenshotStrategy(activityTestRule.activity))
     }
@@ -70,7 +83,9 @@ class BookmarksScreenshot : BaseScreenshot() {
     fun screenshotBookmarks() {
 
         session {
-            loadPageFromHomeSearchField(activityTestRule.activity, webServer.url(TEST_SITE_1).toString())
+            loadPageFromHomeSearchField(
+                activityTestRule.activity, webServer.url(TEST_SITE_1).toString()
+            )
             clickBrowserMenu()
             toggleBookmark()
             checkAddBookmarkSnackbarIsDisplayed()

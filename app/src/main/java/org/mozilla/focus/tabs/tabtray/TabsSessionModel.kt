@@ -18,7 +18,8 @@ import org.mozilla.rocket.tabs.TabViewEngineSession
 
 import java.util.ArrayList
 
-internal class TabsSessionModel(private val sessionManager: SessionManager) : TabTrayContract.Model {
+internal class TabsSessionModel(private val sessionManager: SessionManager) :
+    TabTrayContract.Model {
     private var modelObserver: SessionModelObserver? = null
 
     private val tabs = ArrayList<Session>()

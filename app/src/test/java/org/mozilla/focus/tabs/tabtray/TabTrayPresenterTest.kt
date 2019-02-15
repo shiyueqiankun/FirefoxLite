@@ -59,7 +59,8 @@ class TabTrayPresenterTest {
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).closeTabTray()
 
-        Mockito.`when`(tabsSessionModel.tabs).thenReturn(listOf(Session(), Session(), Session()))
+        Mockito.`when`(tabsSessionModel.tabs)
+            .thenReturn(listOf(Session(), Session(), Session()))
         this.tabTrayPresenter.viewReady()
         verify<TabTrayContract.View>(this.tabTrayContractView).showFocusedTab(anyInt())
     }
@@ -77,7 +78,9 @@ class TabTrayPresenterTest {
         val presenter = TabTrayPresenter(tabTrayContractView, TabsSessionModel(session))
 
         // view is not ready yet, add tab should not trigger refreshData
-        verify<TabTrayContract.View>(this.tabTrayContractView, never()).refreshData(tabListCaptor.capture(), any())
+        verify<TabTrayContract.View>(
+            this.tabTrayContractView, never()
+        ).refreshData(tabListCaptor.capture(), any())
 
         // OK we are ready
         presenter.viewReady()
@@ -87,7 +90,9 @@ class TabTrayPresenterTest {
         Assert.assertEquals(4, session.getTabs().size)
 
         // Assert refresh data is called, with new tab list of size=4
-        verify<TabTrayContract.View>(this.tabTrayContractView).refreshData(tabListCaptor.capture(), any())
+        verify<TabTrayContract.View>(this.tabTrayContractView).refreshData(
+            tabListCaptor.capture(), any()
+        )
         Assert.assertEquals(4, tabListCaptor.value.size)
     }
 

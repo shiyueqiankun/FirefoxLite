@@ -39,7 +39,10 @@ class DownloadInfoRepository {
         }
     }
 
-    fun queryDownloadingItems(runningIds: LongArray, listenerList: OnQueryListCompleteListener) {
+    fun queryDownloadingItems(
+        runningIds: LongArray,
+        listenerList: OnQueryListCompleteListener
+    ) {
         ThreadUtils.postToBackgroundThread {
             val query = DownloadManager.Query()
             query.setFilterById(*runningIds)
@@ -49,8 +52,10 @@ class DownloadInfoRepository {
                     val list = ArrayList<DownloadInfo>()
                     while (it.moveToNext()) {
                         val id = it.getLong(it.getColumnIndex(DownloadManager.COLUMN_ID))
-                        val totalSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                        val currentSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                        val totalSize =
+                            it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                        val currentSize =
+                            it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
                         val info = DownloadInfo()
                         info.downloadId = id
                         info.sizeTotal = totalSize
@@ -83,14 +88,14 @@ class DownloadInfoRepository {
 
     companion object {
 
-        @Volatile private var INSTANCE: DownloadInfoRepository? = null
+        @Volatile
+        private var INSTANCE: DownloadInfoRepository? = null
 
         @JvmStatic
-        fun getInstance(): DownloadInfoRepository? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: DownloadInfoRepository().also {
-                        INSTANCE = it
-                    }
-                }
+        fun getInstance(): DownloadInfoRepository? = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: DownloadInfoRepository().also {
+                INSTANCE = it
+            }
+        }
     }
 }

@@ -20,10 +20,18 @@ class PromotionModelTest {
         val eventHistory = mock(Settings.EventHistory::class.java)
         val newFeatureNotice = mock(NewFeatureNotice::class.java)
 
-        `when`(safeIntent.getBooleanExtra(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)).thenReturn(true)
+        `when`(
+            safeIntent.getBooleanExtra(
+                IntentUtils.EXTRA_SHOW_RATE_DIALOG,
+                false
+            )
+        ).thenReturn(
+            true
+        )
         `when`(newFeatureNotice.shouldShowPrivacyPolicyUpdate()).thenReturn(false)
 
-        val promotionModel = PromotionModel(context, eventHistory, newFeatureNotice, safeIntent)
+        val promotionModel =
+            PromotionModel(context, eventHistory, newFeatureNotice, safeIntent)
 
         promotionModel.parseIntent(safeIntent)
         assertEquals(true, promotionModel.showRateAppDialogFromIntent)

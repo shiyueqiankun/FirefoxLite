@@ -4,7 +4,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import org.mozilla.focus.Inject
 
-class DownloadViewModelFactory private constructor(private val repository: DownloadInfoRepository) : ViewModelProvider.NewInstanceFactory() {
+class DownloadViewModelFactory private constructor(private val repository: DownloadInfoRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -18,12 +19,14 @@ class DownloadViewModelFactory private constructor(private val repository: Downl
 
     companion object {
 
-        @Volatile private var INSTANCE: DownloadViewModelFactory? = null
+        @Volatile
+        private var INSTANCE: DownloadViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance(): DownloadViewModelFactory? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: DownloadViewModelFactory(Inject.provideDownloadInfoRepository()).also { INSTANCE = it }
-                }
+        fun getInstance(): DownloadViewModelFactory? = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: DownloadViewModelFactory(Inject.provideDownloadInfoRepository()).also {
+                INSTANCE = it
+            }
+        }
     }
 }

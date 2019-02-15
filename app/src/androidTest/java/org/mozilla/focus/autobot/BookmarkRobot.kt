@@ -32,16 +32,23 @@ class BookmarkRobot : MenuRobot() {
     }
 
     fun clickListItemActionMenu(position: Int) {
-        onView(withId(R.id.recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, clickChildViewWithId(R.id.history_item_btn_more)))
+        onView(withId(R.id.recyclerview)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                position, clickChildViewWithId(R.id.history_item_btn_more)
+            )
+        )
     }
 
     fun checkItemMenuEditIsDisplayed() {
-        onView(withText(R.string.edit_bookmark)).inRoot(RootMatchers.isPlatformPopup()).check(matches(isDisplayed()))
+        onView(withText(R.string.edit_bookmark)).inRoot(RootMatchers.isPlatformPopup())
+            .check(matches(isDisplayed()))
     }
 
     fun clickItemMenuEdit() {
-        onView(withText(R.string.edit_bookmark)).inRoot(RootMatchers.isPlatformPopup()).perform(click())
+        onView(withText(R.string.edit_bookmark)).inRoot(RootMatchers.isPlatformPopup())
+            .perform(click())
     }
 
-    fun checkBookmarkUpdatedToastIsDisplayed(activity: MainActivity) = AndroidTestUtils.toastContainsText(activity, R.string.bookmark_edit_success)
+    fun checkBookmarkUpdatedToastIsDisplayed(activity: MainActivity) =
+        AndroidTestUtils.toastContainsText(activity, R.string.bookmark_edit_success)
 }

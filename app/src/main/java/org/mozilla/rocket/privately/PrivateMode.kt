@@ -36,7 +36,8 @@ class PrivateMode {
                 return AppConfigWrapper.isPrivateModeEnabled(context)
             }
             // In Debug and Firebase(debug) build type, enable Private Mode by default
-            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, true)
+            return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(PREF_KEY_PRIVATE_MODE_ENABLED, true)
         }
 
         @JvmStatic
@@ -47,7 +48,10 @@ class PrivateMode {
                     clean(dir, context)
                 }
 
-                context.applicationContext.getDir(PrivateMode.WEBVIEW_FOLDER_NAME, MODE_PRIVATE)?.let { dir ->
+                context.applicationContext.getDir(
+                    PrivateMode.WEBVIEW_FOLDER_NAME,
+                    MODE_PRIVATE
+                )?.let { dir ->
                     clean(dir, context)
                 }
             }
@@ -80,7 +84,8 @@ class PrivateMode {
             val delete = FileUtils.deleteDirectory(dir)
             if (!delete) {
                 // TODO:remember to clear the  SANITIZE_REMINDER when the app launch next time
-                PreferenceManager.getDefaultSharedPreferences(context)?.edit()?.putString(PREF_KEY_SANITIZE_REMINDER, dir.absolutePath)?.apply()
+                PreferenceManager.getDefaultSharedPreferences(context)?.edit()
+                    ?.putString(PREF_KEY_SANITIZE_REMINDER, dir.absolutePath)?.apply()
             }
         }
     }

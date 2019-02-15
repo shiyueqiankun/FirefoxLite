@@ -36,8 +36,10 @@ class PromotionPresenterTest {
     private fun verifyLaunch(times: Int) {
 
         Mockito.`when`(model.rateAppDialogThreshold).thenReturn(settingRateAppDialogThreshold)
-        Mockito.`when`(model.rateAppNotificationThreshold).thenReturn(settingRateAppNotificationThreshold)
-        Mockito.`when`(model.shareAppDialogThreshold).thenReturn(settingShareAppDialogThreshold)
+        Mockito.`when`(model.rateAppNotificationThreshold)
+            .thenReturn(settingRateAppNotificationThreshold)
+        Mockito.`when`(model.shareAppDialogThreshold)
+            .thenReturn(settingShareAppDialogThreshold)
         Mockito.`when`(model.didShowRateDialog).thenReturn(false)
 
         for (i in 1..times) {
@@ -82,8 +84,10 @@ class PromotionPresenterTest {
     fun runPromotionFromIntent() {
 
         Mockito.`when`(model.rateAppDialogThreshold).thenReturn(settingRateAppDialogThreshold)
-        Mockito.`when`(model.rateAppNotificationThreshold).thenReturn(settingRateAppNotificationThreshold)
-        Mockito.`when`(model.shareAppDialogThreshold).thenReturn(settingShareAppDialogThreshold)
+        Mockito.`when`(model.rateAppNotificationThreshold)
+            .thenReturn(settingRateAppNotificationThreshold)
+        Mockito.`when`(model.shareAppDialogThreshold)
+            .thenReturn(settingShareAppDialogThreshold)
         Mockito.`when`(model.showRateAppDialogFromIntent).thenReturn(false)
         PromotionPresenter.runPromotionFromIntent(view, model)
         Mockito.verify(view, Mockito.times(0)).showRateAppDialogFromIntent()

@@ -7,8 +7,10 @@ package org.mozilla.rocket.urlinput
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 
-class QuickSearchViewModelFactory(private val repository: QuickSearchRepository) : ViewModelProvider.NewInstanceFactory() {
+class QuickSearchViewModelFactory(private val repository: QuickSearchRepository) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>) = QuickSearchViewModel(repository) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        QuickSearchViewModel(repository) as T
 }

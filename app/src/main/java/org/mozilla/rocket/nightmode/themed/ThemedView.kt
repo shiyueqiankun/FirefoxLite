@@ -9,7 +9,8 @@ class ThemedView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
-            val drawableState = super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
+            val drawableState =
+                super.onCreateDrawableState(extraSpace + ThemedWidgetUtils.STATE_NIGHT_MODE.size)
             View.mergeDrawableStates(drawableState, ThemedWidgetUtils.STATE_NIGHT_MODE)
             drawableState
         } else {

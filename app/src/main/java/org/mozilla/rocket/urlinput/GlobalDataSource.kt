@@ -23,15 +23,15 @@ class GlobalDataSource : QuickSearchDataSource {
 
         // It's an Application Context so it should be safe
         @SuppressLint("StaticFieldLeak")
-        @Volatile private var INSTANCE: GlobalDataSource? = null
+        @Volatile
+        private var INSTANCE: GlobalDataSource? = null
 
         @JvmStatic
-        fun getInstance(context: Context): GlobalDataSource? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: GlobalDataSource().also {
-                        INSTANCE = it
-                        it.context = context.applicationContext
-                    }
-                }
+        fun getInstance(context: Context): GlobalDataSource? = INSTANCE ?: synchronized(this) {
+            INSTANCE ?: GlobalDataSource().also {
+                INSTANCE = it
+                it.context = context.applicationContext
+            }
+        }
     }
 }

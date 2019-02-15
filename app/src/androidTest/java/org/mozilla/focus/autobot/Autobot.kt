@@ -50,7 +50,8 @@ class ScreenshotRobot : MenuRobot() {
         // Click the first item in my shots panel
         // Since "index=0" in ScreenshotItemAdapter is always date label, the first screenshot item will start from "index=1".
         onView(withId(R.id.screenshot_grid_recycler_view)).perform(
-                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click()))
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1, click())
+        )
 
         // Check if screenshot is displayed
         onView(withId(R.id.screenshot_viewer_image)).check(matches(isDisplayed()))
@@ -69,7 +70,11 @@ class ScreenshotRobot : MenuRobot() {
         onView(withId(R.id.screenshot_viewer_btn_delete)).perform(click())
 
         // Confirm delete
-        onView(allOf(withText(R.string.browsing_history_menu_delete), isDisplayed())).perform(click())
+        onView(
+            allOf(
+                withText(R.string.browsing_history_menu_delete), isDisplayed()
+            )
+        ).perform(click())
 
         // FIXME: Add an idling resource here between delete and isDisplayed check
         // Check if come back to my shots panel
@@ -117,20 +122,23 @@ class SettingRobot {
     fun prefSendUsageData(): SettingRobot {
         // Click on the switch multiple times...
         interaction = Espresso.onData(
-                Is.`is`(CoreMatchers.instanceOf(TelemetrySwitchPreference::class.java))).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
+            Is.`is`(CoreMatchers.instanceOf(TelemetrySwitchPreference::class.java))
+        ).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
         return this
     }
 
     fun prefTurboMode(): SettingRobot {
         // Click on the switch multiple times...
         interaction = Espresso.onData(
-                Is.`is`(CoreMatchers.instanceOf(TurboSwitchPreference::class.java))).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
+            Is.`is`(CoreMatchers.instanceOf(TurboSwitchPreference::class.java))
+        ).onChildView(ViewMatchers.withClassName(Is.`is`(Switch::class.java.name)))
         return this
     }
 
     fun restartAndcheckNoLeak(): SettingRobot {
         // shouldn't leak SettingsActivity if SettingsActivity is recreated before the task completed.
-        leakWatchIdlingResource = ActivityRecreateLeakWatcherIdlingResource(settingsActivity.activity)
+        leakWatchIdlingResource =
+            ActivityRecreateLeakWatcherIdlingResource(settingsActivity.activity)
 
         // re create the activity to force the current one to call onDestroy.
         // two things are happening here:

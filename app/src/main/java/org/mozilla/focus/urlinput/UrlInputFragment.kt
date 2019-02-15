@@ -38,7 +38,7 @@ import java.util.Locale
  * Fragment for displaying he URL input controls.
  */
 class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
-        View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
+    View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
 
     private val autoCompleteProvider: DomainAutoCompleteProvider = DomainAutoCompleteProvider()
     private lateinit var presenter: UrlInputContract.Presenter
@@ -55,8 +55,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         val userAgent = WebViewProvider.getUserAgentString(activity)
-        this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
-                .getDefaultSearchEngine(activity), userAgent)
+        this.presenter = UrlInputPresenter(
+            SearchEngineManager.getInstance().getDefaultSearchEngine(activity), userAgent
+        )
 
         context?.let {
             autoCompleteProvider.initialize(it.applicationContext, true, false)
@@ -64,9 +65,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_urlinput, container, false)
 
@@ -102,7 +101,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun initQuickSearch(view: View) {
         quickSearchView = view.findViewById(R.id.quick_search_recycler_view)
-        quickSearchView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        quickSearchView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val quickSearchAdapter = QuickSearchAdapter(fun(quickSearch: QuickSearch) {
             if (TextUtils.isEmpty(urlView.text)) {
                 openUrl(quickSearch.homeUrl)
@@ -113,9 +113,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         })
         quickSearchView.adapter = quickSearchAdapter
         Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
-                viewLifecycleOwner,
-                Observer { quickSearchList ->
-                    quickSearchAdapter.submitList(quickSearchList)
+            viewLifecycleOwner,
+            Observer { quickSearchList ->
+                quickSearchAdapter.submitList(quickSearchList)
             })
     }
 
@@ -180,7 +180,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         // We do not save any state in this fragment (It's getting destroyed) so this should not be a problem.
         val activity = activity
         if (activity is FragmentListener) {
-            (activity as FragmentListener).onNotified(this, FragmentListener.TYPE.DISMISS_URL_INPUT, true)
+            (activity as FragmentListener).onNotified(
+                this, FragmentListener.TYPE.DISMISS_URL_INPUT, true
+            )
         }
     }
 
@@ -198,10 +200,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
             val isUrl = SupportUtils.isUrl(input)
 
-            val url = if (isUrl)
-                SupportUtils.normalize(input)
-            else
-                SearchUtils.createSearchUrl(context, input)
+            val url = if (isUrl) SupportUtils.normalize(input)
+            else SearchUtils.createSearchUrl(context, input)
 
             val isOpenInNewTab = openUrl(url)
 
@@ -220,16 +220,15 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         val args = arguments
         if (args != null && args.containsKey(ARGUMENT_PARENT_FRAGMENT)) {
-            openNewTab = ScreenNavigator.HOME_FRAGMENT_TAG == args.getString(ARGUMENT_PARENT_FRAGMENT)
+            openNewTab =
+                ScreenNavigator.HOME_FRAGMENT_TAG == args.getString(ARGUMENT_PARENT_FRAGMENT)
         }
 
         val activity = activity
         if (activity is FragmentListener) {
             val listener = activity as? FragmentListener
-            val msgType = if (openNewTab)
-                FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB
-            else
-                FragmentListener.TYPE.OPEN_URL_IN_CURRENT_TAB
+            val msgType = if (openNewTab) FragmentListener.TYPE.OPEN_URL_IN_NEW_TAB
+            else FragmentListener.TYPE.OPEN_URL_IN_CURRENT_TAB
 
             listener?.onNotified(this, msgType, url)
         }
@@ -250,17 +249,20 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             return
         }
 
-        val searchKey = urlView.originalText.trim { it <= ' ' }.toLowerCase(Locale.getDefault())
+        val searchKey =
+            urlView.originalText.trim { it <= ' ' }.toLowerCase(Locale.getDefault())
         for (i in texts.indices) {
             val item = View.inflate(context, R.layout.tag_text, null) as TextView
             val str = texts[i].toString()
             val idx = str.toLowerCase(Locale.getDefault()).indexOf(searchKey)
             if (idx != -1) {
                 val builder = SpannableStringBuilder(texts[i])
-                builder.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
-                        idx,
-                        idx + searchKey.length,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                builder.setSpan(
+                    android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                    idx,
+                    idx + searchKey.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
                 item.text = builder
             } else {
                 item.text = texts[i]
@@ -282,13 +284,14 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
         autoCompleteInProgress = true
         val result = autoCompleteProvider.autocomplete(searchText)
-        view?.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.size) { result.url })
+        view?.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(
+            result.text, result.source, result.size
+        ) { result.url })
         autoCompleteInProgress = false
     }
 
     private fun onTextChange(
-        originalText: String,
-        @Suppress("UNUSED_PARAMETER") autocompleteText: String
+        originalText: String, @Suppress("UNUSED_PARAMETER") autocompleteText: String
     ) {
         if (autoCompleteInProgress) {
             return
@@ -319,7 +322,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
          * fake url bar view.
          */
         @JvmStatic
-        fun create(url: String?, parentFragmentTag: String?, allowSuggestion: Boolean): UrlInputFragment {
+        fun create(
+            url: String?, parentFragmentTag: String?, allowSuggestion: Boolean
+        ): UrlInputFragment {
             val arguments = Bundle()
             arguments.putString(ARGUMENT_URL, url)
             arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag)
