@@ -529,8 +529,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void playContentPortalAnimation() {
         final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
         final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
-        Inject.startAnimation(arrow1, fadeout);
-        Inject.startAnimation(arrow2, fadein);
+        arrow1.startAnimation(fadeout);
+        arrow2.startAnimation(fadein);
     }
 
     private void setupBannerTimer() {

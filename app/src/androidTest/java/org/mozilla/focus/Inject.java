@@ -130,7 +130,4 @@ public class Inject {
         QuickSearchViewModelFactory factory = new QuickSearchViewModelFactory(provideQuickSearchRepository(activity.getApplicationContext()));
         return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
     }
-
-    public static void startAnimation(View view, Animation animation) {
-    }
 }

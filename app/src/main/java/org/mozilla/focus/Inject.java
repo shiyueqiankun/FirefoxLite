@@ -119,7 +119,4 @@ public class Inject {
         return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
     }
 
-    public static void startAnimation(View view, Animation animation) {
-        view.startAnimation(animation);
-    }
 }
