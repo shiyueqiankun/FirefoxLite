@@ -29,6 +29,7 @@ public class BackgroundCachedRequestLoaderTest {
 
     @Test
     public void testLoadAndCacheLoadFaster() throws InterruptedException {
+        Inject.sleepIfTesting(false);
         final MockWebServer webServer = new MockWebServer();
         final CountDownLatch latch1 = new CountDownLatch(1);
         final CountDownLatch latch2 = new CountDownLatch(1);

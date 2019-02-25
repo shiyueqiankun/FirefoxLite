@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 
@@ -63,6 +64,7 @@ public class Inject {
     }
 
     public static void enableStrictMode() {
+        Log.d("BOBO", "main enableStrictMode() called");
         if (AppConstants.isReleaseBuild()) {
             return;
         }

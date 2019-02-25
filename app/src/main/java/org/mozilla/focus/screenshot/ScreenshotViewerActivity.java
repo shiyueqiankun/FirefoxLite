@@ -45,6 +45,8 @@ import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.screenshot.model.ImageInfo;
 import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.permissionhandler.PermissionHandle;
+import org.mozilla.permissionhandler.PermissionHandler;
 import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.threadutils.ThreadUtils;
 
