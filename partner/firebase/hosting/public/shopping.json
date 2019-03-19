@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "5c8f5b51d2e170e5fa8d2310",
+    "isActive": false,
+    "isHighlight": false,
+    "title": "Beli Tiket Kereta Lebih Irit, Mudik Jadi Lebih Asik",
+    "promo_url": "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fpromo-detail%2Fbeli-tiket-kereta-lebih-irit-mudik-jadi-lebih-asik%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+    "start": "2016-03-08T02:08:38 -08:00",
+    "end": "2015-06-27T12:33:16 -08:00",
+    "code": "BUSPERGI",
+    "thumbnail": "http://placehold.it/32x32",
+    "banner": "http://placehold.it/600x320"
+  },
+  {
+    "_id": "5c8f5b51f0dc2bac78d20e4d",
+    "isActive": false,
+    "isHighlight": true,
+    "title": "Beli Tiket Kereta Lebih Irit, Mudik Jadi Lebih Asik",
+    "promo_url": "http://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&url=https%3A%2F%2Fwww.bukalapak.com%2Fpromo-detail%2Fbeli-tiket-kereta-lebih-irit-mudik-jadi-lebih-asik%3Fho_offer_id%3D{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers%26utm_medium%3Daffiliate%26utm_campaign%3D{offer_id}%26ref%3D{referer}",
+    "start": "2014-10-01T07:43:33 -08:00",
+    "end": "2017-05-15T02:40:39 -08:00",
+    "code": "BUSPERGI",
+    "thumbnail": "http://placehold.it/32x32",
+    "banner": "http://placehold.it/600x320"
+  }
+]

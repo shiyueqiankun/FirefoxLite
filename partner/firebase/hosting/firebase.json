@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "postdeploy": "../script/check.py ./public/shopping.json"
+  }
+}
