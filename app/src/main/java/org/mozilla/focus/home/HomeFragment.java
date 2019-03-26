@@ -360,7 +360,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             LoggerWrapper.throwOrWarn(TAG, "Failed to open Cache directory when reading cached banner config");
         }
         // Setup from Network
-        String manifest = AppConfigWrapper.getBannerRootConfig(context);
+        String manifest = AppConfigWrapper.getBannerRootConfig();
         if (TextUtils.isEmpty(manifest)) {
             deleteCache(context);
             banner.setAdapter(null);
@@ -965,7 +965,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initFeatureSurveyViewIfNecessary(final View view) {
-        final RemoteConfigConstants.SURVEY featureSurvey = RemoteConfigConstants.SURVEY.Companion.parseLong(AppConfigWrapper.getFeatureSurvey(getContext()));
+        final RemoteConfigConstants.SURVEY featureSurvey = RemoteConfigConstants.SURVEY.Companion.parseLong(AppConfigWrapper.getFeatureSurvey());
         final ImageView imgSurvey = view.findViewById(R.id.home_wifi_vpn_survey);
         final Settings.EventHistory eventHistory = Settings.getInstance(getContext()).getEventHistory();
         if (featureSurvey == RemoteConfigConstants.SURVEY.WIFI_FINDING && !eventHistory.contains(Settings.Event.FeatureSurveyWifiFinding)) {
@@ -982,7 +982,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             }
         } else if (featureSurvey == RemoteConfigConstants.SURVEY.VPN_RECOMMENDER && !eventHistory.contains(Settings.Event.VpnRecommenderIgnore)) {
             PackageInfo packageInfo = null;
-            final String packageName = AppConfigWrapper.getVpnRecommenderPackage(getActivity());
+            final String packageName = AppConfigWrapper.getVpnRecommenderPackage();
             try {
                 Activity activity = getActivity();
                 if (activity != null) {
