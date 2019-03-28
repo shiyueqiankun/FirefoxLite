@@ -71,15 +71,7 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.tabs.TabCounter;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.DimenUtils;
-import org.mozilla.focus.utils.FirebaseHelper;
-import org.mozilla.focus.utils.OnSwipeListener;
-import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.SwipeMotionDetector;
-import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.utils.*;
 import org.mozilla.focus.web.WebViewProvider;
 import org.mozilla.focus.widget.FragmentListener;
 import org.mozilla.focus.widget.SwipeMotionLayout;
@@ -165,14 +157,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private String[] configArray;
     private LottieAnimationView downloadingIndicator;
     private ImageView downloadIndicator;
-    private boolean hasContentPortal = false;
     private PinSiteManager pinSiteManager;
-
-    @Override
-    public void onAttach (Context context) {
-        super.onAttach(context);
-        hasContentPortal = Settings.isContentPortalEnabled(context);
-    }
 
     private Handler uiHandler = new Handler(Looper.getMainLooper()) {
 
@@ -441,7 +426,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
                              @Nullable Bundle savedInstanceState) {
 
         final View view;
-        if (hasContentPortal) {
+        if (NewFeatureNotice.getInstance(getContext()).isNewsEnabled()) {
             view = inflater.inflate(R.layout.fragment_homescreen_news, container, false);
         } else {
             view = inflater.inflate(R.layout.fragment_homescreen, container, false);
