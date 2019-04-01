@@ -14,4 +14,8 @@ public class AdjustHelper {
 
     public static void trackEvent(String eventToken) {
     }
+
+    public static String getTrackerToken() {
+        return "";
+    }
 }

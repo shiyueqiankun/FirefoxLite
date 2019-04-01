@@ -287,7 +287,8 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
                             resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_s_news),
-                            resources.getString(R.string.pref_key_locale))
+                            resources.getString(R.string.pref_key_locale),
+                            AdjustHelper.getTrackerToken())
                     .setSettingsProvider(CustomSettingsProvider())
                     .setCollectionEnabled(telemetryEnabled)
                     .setUploadEnabled(true) // the default value for UploadEnabled is true, but we want to make it clear.

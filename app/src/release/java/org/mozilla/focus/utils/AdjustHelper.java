@@ -61,6 +61,10 @@ public class AdjustHelper {
         }
     }
 
+    public static String getTrackerToken() {
+        return Adjust.getAttribution().trackerToken;
+    }
+
     private static final class AdjustLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
         @Override
         public void onActivityResumed(Activity activity) {
