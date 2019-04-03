@@ -1,6 +1,5 @@
 package org.mozilla.rocket.content
 
-import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -18,7 +17,7 @@ interface NewsViewContract {
 }
 
 class NewsPresenter(private val newsViewContract: NewsViewContract) :
-    ContentPortalView.ContentPortalListener {
+    ContentPortalView.NewsListListener {
 
     companion object {
         private val LOADMORE_THRESHOLD = 3000L
