@@ -43,7 +43,8 @@ inline fun runWithIdleRes(ir: IdlingResource?, pendingCheck: () -> Unit) {
         IdlingRegistry.getInstance().unregister(ir)
     }
 }
-
+data class Happ(
+    val list : ArrayList<Integer>)
 class ScreenshotRobot : MenuRobot() {
 
     fun clickFirstItemInMyShotsAndOpen() {
